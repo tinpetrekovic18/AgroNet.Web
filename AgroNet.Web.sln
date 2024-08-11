@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgroNet.Web", "AgroNet.Web\AgroNet.Web.csproj", "{0CA0E5BD-CCA0-431B-92DD-10E277CDF905}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroNet.Web", "AgroNet.Web\AgroNet.Web.csproj", "{0CA0E5BD-CCA0-431B-92DD-10E277CDF905}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgroNet.Model", "AgroNet.Model\AgroNet.Model.csproj", "{169AB588-399A-4A87-8923-881827EEFD51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgroNet.DAL", "AgroNet.DAL\AgroNet.DAL.csproj", "{164807C0-3530-4E2F-B8AF-4AB024B49C7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{0CA0E5BD-CCA0-431B-92DD-10E277CDF905}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CA0E5BD-CCA0-431B-92DD-10E277CDF905}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CA0E5BD-CCA0-431B-92DD-10E277CDF905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{169AB588-399A-4A87-8923-881827EEFD51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{169AB588-399A-4A87-8923-881827EEFD51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{169AB588-399A-4A87-8923-881827EEFD51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{169AB588-399A-4A87-8923-881827EEFD51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{164807C0-3530-4E2F-B8AF-4AB024B49C7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{164807C0-3530-4E2F-B8AF-4AB024B49C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{164807C0-3530-4E2F-B8AF-4AB024B49C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{164807C0-3530-4E2F-B8AF-4AB024B49C7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
