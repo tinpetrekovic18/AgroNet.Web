@@ -14,6 +14,9 @@ namespace AgroNet.Model
         public int Id { get; set; }
 
         [Required]
+        public string Naziv { get; set; }
+
+        [Required]
         public int? PostanskiBroj { get; set; }
 
         [Required]

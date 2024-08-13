@@ -19,12 +19,13 @@ namespace AgroNet.Model
         [Required]
         [ForeignKey("Mjesto")]
         public int MjestoPrebivalistaId { get; set; }
+        public Mjesto MjestoPrebivalista { get; set; }
 
         public string BrojTelefona { get; set; }
 
         public string Email { get; set; }
 
-        public Mjesto MjestoPrebivalista { get; set; }
+        
     }
 
 }

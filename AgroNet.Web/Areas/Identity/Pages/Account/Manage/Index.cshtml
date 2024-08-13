@@ -12,14 +12,43 @@
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                <input asp-for="Username" class="form-control" placeholder="Please choose your username."  />
                 <label asp-for="Username" class="form-label"></label>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <input asp-for="Input.BrojMobitela" class="form-control" placeholder="Please enter your phone number." />
+                <label asp-for="Input.BrojMobitela" class="form-label"></label>
+                <span asp-validation-for="Input.BrojMobitela" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.OIB" class="form-control" placeholder="Please enter your OIB." />
+                <label asp-for="Input.OIB" class="form-label"></label>
+                <span asp-validation-for="Input.OIB" class="text-danger"></span>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <label class="control-label">Adresa</label>
+                <div id="mapbox" class="mb-3"></div>
+            </div>
+            <div class="form-group">
+                <input asp-for="Input.Adresa" class="form-control" id="address" hidden />
+                <span asp-validation-for="Input.Adresa" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <select asp-for="Input.ZupanijaId" asp-items="ViewBag.Zupanije" class="form-control"></select>
+                <span asp-validation-for="Input.ZupanijaId" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PostanskiBroj" class="form-control" placeholder="Please enter your OIB." />
+                <label asp-for="Input.PostanskiBroj" class="form-label"></label>
+                <span asp-validation-for="Input.PostanskiBroj" class="text-danger"></span>
+            </div>
+
+            
+
+
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>
     </div>
@@ -27,4 +56,36 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet"
+          href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+    <script>
+        var address = $("#address");
+        var mjestoNaziv = @Html.Raw(Json.Serialize(ViewData["MjestoNaziv"]));
+
+        const geocoder = new MapboxGeocoder({
+            accessToken: 'pk.eyJ1IjoibXphbmlub3ZpYzU1NSIsImEiOiJjbDJ3MmkxNzMwaGQ2M2pxcGxiZm83NmU0In0.izS7XWeD2MAq4Y6M-l4bKA',
+            types: 'country,region,place,postcode,locality,neighborhood,address',
+            placeholder: mjestoNaziv ? mjestoNaziv : 'Enter your address'
+        });
+
+        geocoder.addTo('#mapbox');
+
+        if (mjestoNaziv) {
+            // Set the input value to the Mjesto Naziv on load
+            $(".mapboxgl-ctrl-geocoder--input").val(mjestoNaziv);
+            address.val(mjestoNaziv);
+        }
+
+        $(".mapboxgl-ctrl-geocoder--input").change(function () {
+            address.val($(this).val());
+            console.log(address.val());
+        });
+    </script>
 }
+
+
+
