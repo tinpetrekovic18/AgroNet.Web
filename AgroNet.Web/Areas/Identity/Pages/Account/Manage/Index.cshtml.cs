@@ -47,7 +47,7 @@ namespace AgroNet.Web.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Adresa")]
             public string Adresa { get; set; }
 
-            [Display(Name = "PostanskiBroj")]    
+            [Display(Name = "PostanskiBroj")]
             public string PostanskiBroj { get; set; }
 
             [Display(Name = "Županija")]

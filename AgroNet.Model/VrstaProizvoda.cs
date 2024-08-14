@@ -14,6 +14,7 @@ namespace AgroNet.Model
 
         [Required]
         public string Naziv { get; set; }
+
     }
 
 }
