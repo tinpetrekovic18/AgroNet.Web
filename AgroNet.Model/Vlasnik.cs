@@ -13,6 +13,10 @@ namespace AgroNet.Model
         [Key]
         public int Id { get; set; }
 
+        public string Ime { get; set; }
+
+        public string Prezime { get; set; }
+
         [StringLength(11)]
         public string OIB { get; set; }
 
@@ -25,7 +29,9 @@ namespace AgroNet.Model
 
         public string Email { get; set; }
 
-        
+
+
+
     }
 
 }

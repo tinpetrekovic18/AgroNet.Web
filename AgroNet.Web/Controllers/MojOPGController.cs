@@ -11,10 +11,12 @@ public class MojOPGController : Controller
     private readonly AgroNetDbContext _context;
     private readonly UserManager<AppUser> _userManager;
 
+    
     public MojOPGController(AgroNetDbContext context, UserManager<AppUser> userManager)
     {
         _context = context;
         _userManager = userManager;
+            
     }
 
     // GET: MojOPG/Create or Edit

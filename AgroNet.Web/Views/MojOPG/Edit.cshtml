@@ -6,37 +6,46 @@
 
 <h2>Edit OPG</h2>
 
-<form asp-action="Edit" method="post">
-    <div class="form-group">
-        <label asp-for="Naziv" class="control-label"></label>
-        <input asp-for="Naziv" class="form-control" />
-        <span asp-validation-for="Naziv" class="text-danger"></span>
-    </div>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Adjust the width here by changing col-md-6 -->
+            <form asp-action="Edit" method="post">
+                <div class="form-group">
+                    <label asp-for="Naziv" class="control-label"></label>
+                    <input asp-for="Naziv" class="form-control" />
+                    <span asp-validation-for="Naziv" class="text-danger"></span>
+                </div>
+                
 
-    <div class="form-group">
-        <label asp-for="Adresa" class="control-label"></label>
-        <input asp-for="Adresa" class="form-control" />
-        <span asp-validation-for="Adresa" class="text-danger"></span>
-    </div>
+                <div class="form-group">
+                    <label asp-for="Adresa" class="control-label"></label>
+                    <input asp-for="Adresa" class="form-control" />
+                    <span asp-validation-for="Adresa" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="IBAN" class="control-label"></label>
-        <input asp-for="IBAN" class="form-control" />
-        <span asp-validation-for="IBAN" class="text-danger"></span>
-    </div>
+                <div class="form-group">
+                    <label asp-for="IBAN" class="control-label"></label>
+                    <input asp-for="IBAN" class="form-control" />
+                    <span asp-validation-for="IBAN" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="MjestoId" class="control-label"></label>
-        <select asp-for="MjestoId" class="form-control" asp-items="ViewBag.Mjesta"></select>
-        <span asp-validation-for="MjestoId" class="text-danger"></span>
-    </div>
+                <div class="form-group">
+                    <label asp-for="MjestoId" class="control-label"></label>
+                    <select asp-for="MjestoId" class="form-control" asp-items="ViewBag.Mjesta"></select>
+                    <span asp-validation-for="MjestoId" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Save Changes" class="btn btn-primary" />
-        <a asp-action="CreateOrEdit" class="btn btn-secondary">Cancel</a>
+                <div class="form-group mt-4">
+                    <!-- Add margin-top to create space -->
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+                    <a asp-action="CreateOrEdit" class="btn btn-secondary ml-2">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

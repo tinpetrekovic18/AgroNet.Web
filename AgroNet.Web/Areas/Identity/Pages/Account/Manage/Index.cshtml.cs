@@ -41,6 +41,12 @@ namespace AgroNet.Web.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Broj mobitela")]
             public string BrojMobitela { get; set; }
 
+            [Display(Name = "Ime")]
+            public string Ime { get; set; }
+
+            [Display(Name = "Prezime")]
+            public string Prezime { get; set; }
+
             [Display(Name = "OIB")]
             public string OIB { get; set; }
 
@@ -69,6 +75,8 @@ namespace AgroNet.Web.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 BrojMobitela = phoneNumber,
+                Ime = vlasnik?.Ime,
+                Prezime=vlasnik?.Prezime,
                 OIB = vlasnik?.OIB,
                 Adresa = vlasnik?.MjestoPrebivalista?.Naziv,
                 ZupanijaId = vlasnik?.MjestoPrebivalista?.ZupanijaId ?? 0, // Use 0 or an appropriate default value
@@ -151,6 +159,8 @@ namespace AgroNet.Web.Areas.Identity.Pages.Account.Manage
                 // If Vlasnik doesn't exist, create a new one
                 vlasnik = new Vlasnik
                 {
+                    Ime = Input.Ime,
+                    Prezime = Input.Prezime,
                     OIB = Input.OIB,
                     MjestoPrebivalistaId = existingMjesto.Id, // Set the Mjesto ID
                     BrojTelefona = Input.BrojMobitela,
@@ -165,6 +175,8 @@ namespace AgroNet.Web.Areas.Identity.Pages.Account.Manage
             else
             {
                 // Update the existing Vlasnik
+                vlasnik.Ime = Input.Ime;
+                vlasnik.Prezime = Input.Prezime;
                 vlasnik.OIB = Input.OIB;
                 vlasnik.MjestoPrebivalistaId = existingMjesto.Id; // Update Mjesto ID if necessary
                 vlasnik.BrojTelefona = Input.BrojMobitela;
