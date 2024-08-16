@@ -2,19 +2,55 @@
 
 @{
     ViewData["Title"] = "Create OPG";
-    ViewBag.IsEditMode = false;
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>Create OPG</h2>
 
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            @await Html.PartialAsync("_OPGForm")
+            <!-- Adjust the width here by changing col-md-6 -->
+            <form asp-action="Create" method="post">
+                <div class="form-group">
+                    <label asp-for="Naziv" class="control-label"></label>
+                    <input asp-for="Naziv" class="form-control" />
+                    <span asp-validation-for="Naziv" class="text-danger"></span>
+                </div>
+              
+                <div class="form-group">
+                    <label asp-for="Adresa" class="control-label"></label>
+                    <input asp-for="Adresa" class="form-control" />
+                    <span asp-validation-for="Adresa" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="IBAN" class="control-label"></label>
+                    <input asp-for="IBAN" class="form-control" />
+                    <span asp-validation-for="IBAN" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="MjestoId" class="control-label"></label>
+                    <select asp-for="MjestoId" class="form-control" asp-items="ViewBag.Mjesta"></select>
+                    <span asp-validation-for="MjestoId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="DjelatnostId">Djelatnost</label>
+                    <select id="DjelatnostId" name="DjelatnostId" class="form-control" asp-items="ViewBag.Djelatnosti"></select>
+                </div>
+
+                <div class="form-group mt-4">
+                    <!-- Add margin-top to create space -->
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

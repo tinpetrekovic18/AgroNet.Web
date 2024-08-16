@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 public class MojOPGController : Controller
 {
     private readonly AgroNetDbContext _context;
@@ -101,37 +102,74 @@ public class MojOPGController : Controller
         return View("Create", opg);
     }
 
-    // GET: MojOPG/Edit
     public IActionResult Edit(int id)
     {
-        var userEmail = User.Identity.Name;
-        if (userEmail == null)
-        {
-            return Unauthorized("User is not logged in.");
-        }
+        var opg = _context.OPGs
+            .Include(o => o.Mjesto)
+            .FirstOrDefault(o => o.Id == id);
 
-        var vlasnik = _context.Vlasnici.FirstOrDefault(v => v.Email == userEmail);
-        if (vlasnik == null)
-        {
-            return NotFound("Vlasnik not found.");
-        }
-
-        var opg = _context.OPGs.FirstOrDefault(o => o.Id == id && _context.VlasniciOPG.Any(vo => vo.OPGId == o.Id && vo.VlasnikId == vlasnik.Id));
         if (opg == null)
         {
             return NotFound();
         }
 
-        var djelatnostId = _context.DjelatnostiOPG
-            .Where(d => d.OPGId == id)
-            .Select(d => d.DjelatnostId)
-            .FirstOrDefault();
+        // Fetch the linked DjelatnostId
+        var linkedDjelatnost = _context.DjelatnostiOPG
+            .FirstOrDefault(d => d.OPGId == id);
+        int? selectedDjelatnostId = linkedDjelatnost?.DjelatnostId;
 
         ViewBag.Mjesta = new SelectList(_context.Mjesta, "Id", "Naziv", opg.MjestoId);
-        ViewBag.Djelatnosti = new SelectList(_context.Djelatnosti, "Id", "Naziv", djelatnostId);
+        ViewBag.Djelatnosti = new SelectList(_context.Djelatnosti, "Id", "Naziv", selectedDjelatnostId); // Set the selected item
+        ViewBag.Proizvodi = _context.OPGProizvodi
+            .Where(op => op.OPGId == id)
+            .Select(op => op.Proizvod)
+            .ToList();
+
         ViewBag.IsEditMode = true;
         return View("Edit", opg);
     }
+
+
+
+    // GET: MojOPG/CreateProizvod
+    public IActionResult CreateProizvod(int opgId)
+    {
+        ViewBag.OPGId = opgId;
+        ViewBag.VrstaProizvodaList = new SelectList(_context.VrsteProizvoda, "Id", "Naziv");
+        return View(new Proizvod());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult CreateProizvod(Proizvod proizvod, int opgId)
+    {
+        ModelState.Remove(nameof(proizvod.VrstaProizvoda));
+        if (ModelState.IsValid)
+        {
+            _context.Proizvodi.Add(proizvod);
+            _context.SaveChanges();
+
+            var opgProizvod = new OPGProizvod
+            {
+                OPGId = opgId,
+                ProizvodId = proizvod.Id
+            };
+
+            _context.OPGProizvodi.Add(opgProizvod);
+            _context.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = opgId });
+        }
+
+        // If we reach this point, something went wrong
+        ViewBag.OPGId = opgId;
+        ViewBag.VrstaProizvodaList = new SelectList(_context.VrsteProizvoda, "Id", "Naziv", proizvod.VrstaProizvodaId);
+        return View(proizvod);
+    }
+
+
+
+
 
     // POST: MojOPG/Edit
     [HttpPost]
