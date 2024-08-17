@@ -102,6 +102,74 @@ public class MojOPGController : Controller
         return View("Create", opg);
     }
 
+    public IActionResult CreateStrojAlat(int opgId)
+    {
+        ViewBag.OPGId = opgId;
+        ViewBag.VrstaStrojaAlataList = new SelectList(_context.VrsteStrojevaAlata, "Id", "Naziv");
+        return View(new StrojAlat());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult CreateStrojAlat(StrojAlat strojAlat, int opgId)
+    {
+        ModelState.Remove(nameof(strojAlat.VrstaStrojaAlata));
+        if (ModelState.IsValid)
+        {
+            _context.StrojeviAlati.Add(strojAlat);
+            _context.SaveChanges();
+
+            var opgStrojAlat = new OPGStrojeviAlati
+            {
+                OPGId = opgId,
+                StrojAlatId = strojAlat.Id
+            };
+
+            _context.OPGStrojeviAlati.Add(opgStrojAlat);
+            _context.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = opgId });
+        }
+
+        ViewBag.OPGId = opgId;
+        ViewBag.VrstaStrojaAlataList = new SelectList(_context.VrsteStrojevaAlata, "Id", "Naziv", strojAlat.VrstaStrojaAlataId);
+        return View(strojAlat);
+    }
+
+    public IActionResult CreateUsluga(int opgId)
+    {
+        ViewBag.OPGId = opgId;
+        ViewBag.VrstaUslugeList = new SelectList(_context.VrsteUsluga, "Id", "Naziv");
+        return View(new Usluga());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult CreateUsluga(Usluga usluga, int opgId)
+    {
+        ModelState.Remove(nameof(usluga.VrstaUsluge));
+        if (ModelState.IsValid)
+        {
+            _context.Usluge.Add(usluga);
+            _context.SaveChanges();
+
+            var opgUsluga = new OPGUsluga
+            {
+                OPGId = opgId,
+                UslugaId = usluga.Id
+            };
+
+            _context.OPGUsluge.Add(opgUsluga);
+            _context.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = opgId });
+        }
+
+        ViewBag.OPGId = opgId;
+        ViewBag.VrstaUslugeList = new SelectList(_context.VrsteUsluga, "Id", "Naziv", usluga.VrstaUslugeId);
+        return View(usluga);
+    }
+
     public IActionResult Edit(int id)
     {
         var opg = _context.OPGs
@@ -113,21 +181,47 @@ public class MojOPGController : Controller
             return NotFound();
         }
 
-        // Fetch the linked DjelatnostId
         var linkedDjelatnost = _context.DjelatnostiOPG
             .FirstOrDefault(d => d.OPGId == id);
         int? selectedDjelatnostId = linkedDjelatnost?.DjelatnostId;
 
         ViewBag.Mjesta = new SelectList(_context.Mjesta, "Id", "Naziv", opg.MjestoId);
-        ViewBag.Djelatnosti = new SelectList(_context.Djelatnosti, "Id", "Naziv", selectedDjelatnostId); // Set the selected item
+        ViewBag.Djelatnosti = new SelectList(_context.Djelatnosti, "Id", "Naziv", selectedDjelatnostId);
+
         ViewBag.Proizvodi = _context.OPGProizvodi
-            .Where(op => op.OPGId == id)
-            .Select(op => op.Proizvod)
+        .Where(op => op.OPGId == id)
+        .Select(op => new
+        {
+            op.Proizvod.Naziv,
+            op.Proizvod.Opis,
+            VrstaProizvodaNaziv = op.Proizvod.VrstaProizvoda.Naziv // Include VrstaProizvoda.Naziv
+        })
+        .ToList();
+
+
+        ViewBag.StrojeviAlati = _context.OPGStrojeviAlati
+            .Where(os => os.OPGId == id)
+            .Select(os => new {
+                os.StrojAlat.Naziv,
+                os.StrojAlat.Opis,
+                VrstaStrojaAlataNaziv = os.StrojAlat.VrstaStrojaAlata.Naziv // Include VrstaProizvoda.Naziv
+            })
+            .ToList();
+
+        ViewBag.Usluge = _context.OPGUsluge
+            .Where(ou => ou.OPGId == id)
+            .Select(ou => new {
+                ou.Usluga.Naziv,
+                ou.Usluga.Opis,
+                VrstaUslugeNaziv = ou.Usluga.VrstaUsluge.Naziv // Include VrstaProizvoda.Naziv
+            })
             .ToList();
 
         ViewBag.IsEditMode = true;
         return View("Edit", opg);
     }
+
+
 
 
 

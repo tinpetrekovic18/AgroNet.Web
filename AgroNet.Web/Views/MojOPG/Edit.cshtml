@@ -16,6 +16,12 @@
         <li class="nav-item">
             <a class="nav-link" href="#proizvodi" data-toggle="tab">Proizvodi</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#strojeviAlati" data-toggle="tab">Strojevi i Alati</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#usluge" data-toggle="tab">Usluge</a>
+        </li>
     </ul>
 
     <div class="tab-content mt-3">
@@ -64,9 +70,9 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Actions</th>
+                        <th>Naziv</th>
+                        <th>Opis</th>
+                        <th>Vrsta proizvoda</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,14 +81,58 @@
                         <tr>
                             <td>@item.Naziv</td>
                             <td>@item.Opis</td>
-                            <td>
-                                <!-- Add more action links if needed -->
-                            </td>
+                            <td>@item.VrstaProizvodaNaziv</td> <!-- Display VrstaProizvoda.Naziv -->
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
+        <div class="tab-pane" id="strojeviAlati">
+            <a href="@Url.Action("CreateStrojAlat", new { opgId = opgId })" class="btn btn-primary mb-3">Create New Stroj/Alat</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Opis</th>
+                        <th>Vrsta stroja/alata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.StrojeviAlati)
+                    {
+                        <tr>
+                            <td>@item.Naziv</td>
+                            <td>@item.Opis</td>
+                            <td>@item.VrstaStrojaAlataNaziv</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane" id="usluge">
+            <a href="@Url.Action("CreateUsluga", new { opgId = opgId })" class="btn btn-primary mb-3">Create New Usluga</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Opis</th>
+                        <th>Vrsta usluge</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Usluge)
+                    {
+                        <tr>
+                            <td>@item.Naziv</td>
+                            <td>@item.Opis</td>
+                            <td>@item.VrstaUslugeNaziv</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>
 

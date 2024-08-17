@@ -1,0 +1,32 @@
+﻿@model AgroNet.Model.StrojAlat
+@{
+    var opgId = ViewBag.OPGId;
+    var vrstaStrojaAlataList = ViewBag.VrstaStrojaAlataList as IEnumerable<SelectListItem>;
+}
+
+<div class="container">
+    <h2>Create Stroj/Alat</h2>
+    <form asp-action="CreateStrojAlat" method="post">
+        <div class="form-group">
+            <label asp-for="Naziv" class="control-label"></label>
+            <input asp-for="Naziv" class="form-control" />
+            <span asp-validation-for="Naziv" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Opis" class="control-label"></label>
+            <input asp-for="Opis" class="form-control" />
+            <span asp-validation-for="Opis" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="VrstaStrojaAlataId" class="control-label"></label>
+            <select asp-for="VrstaStrojaAlataId" class="form-control" asp-items="vrstaStrojaAlataList"></select>
+            <span asp-validation-for="VrstaStrojaAlataId" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" name="opgId" value="@opgId" />
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Edit" asp-route-id="@opgId" class="btn btn-secondary">Back to Edit</a>
+    </form>
+</div>
