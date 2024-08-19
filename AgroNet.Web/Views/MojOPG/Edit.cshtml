@@ -1,4 +1,5 @@
-﻿@model AgroNet.Model.OPG
+﻿@using Azure.Core
+@model AgroNet.Model.OPG
 @{
     var isEditMode = ViewBag.IsEditMode;
     var opgId = Model.Id;
@@ -11,21 +12,25 @@
 <div class="container">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" href="#details" data-toggle="tab">Details</a>
+            <a class="nav-link active id="tab-mojOPG" href="#mojOPG" data-toggle="tab">Moj OPG</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#proizvodi" data-toggle="tab">Proizvodi</a>
+            <a class="nav-link" id="tab-proizvodi" href="#proizvodi" data-toggle="tab">Proizvodi</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#strojeviAlati" data-toggle="tab">Strojevi i Alati</a>
+            <a class="nav-link" id="tab-strojeviAlati" href="#strojeviAlati" data-toggle="tab">Strojevi Alati</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#usluge" data-toggle="tab">Usluge</a>
+            <a class="nav-link" id="tab-usluge" href="#usluge" data-toggle="tab">Usluge</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab-imanjaVlasnika" href="#imanjaVlasnika" data-toggle="tab">Imanja Vlasnika</a>
         </li>
     </ul>
 
+
     <div class="tab-content mt-3">
-        <div class="tab-pane active" id="details">
+        <div class="tab-pane active" id="mojOPG">
             <form asp-action="@(ViewBag.IsEditMode ? "Edit" : "Create")" method="post">
                 <div class="form-group">
                     <label asp-for="Naziv" class="control-label"></label>
@@ -82,6 +87,15 @@
                             <td>@item.Naziv</td>
                             <td>@item.Opis</td>
                             <td>@item.VrstaProizvodaNaziv</td> <!-- Display VrstaProizvoda.Naziv -->
+                            <td>
+                                <a href="@Url.Action("EditProizvod", new { id = item.Id, opgId = opgId })" class="btn btn-warning d-inline-block">Uredi</a> <!-- Edit Button -->
+                                <form asp-action="DeleteProizvod" method="post" class="d-inline-block ml-2">
+                                    <!-- Delete form with margin -->
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="hidden" name="opgId" value="@opgId" />
+                                    <input type="submit" value="Obriši" class="btn btn-danger" />
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -104,6 +118,14 @@
                             <td>@item.Naziv</td>
                             <td>@item.Opis</td>
                             <td>@item.VrstaStrojaAlataNaziv</td>
+                            <td>
+                                <a href="@Url.Action("EditStrojAlat", new { id = item.Id, opgId = opgId })" class="btn btn-warning d-inline-block">Uredi</a> <!-- Edit Button -->
+                                <form asp-action="DeleteStrojAlat" method="post" class="d-inline-block ml-2">  <!-- Delete form with margin -->
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="hidden" name="opgId" value="@opgId" />
+                                    <input type="submit" value="Obriši" class="btn btn-danger" />
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -127,11 +149,60 @@
                             <td>@item.Naziv</td>
                             <td>@item.Opis</td>
                             <td>@item.VrstaUslugeNaziv</td>
+                            <td>
+                                <a href="@Url.Action("EditUsluga", new { id = item.Id, opgId = opgId })" class="btn btn-warning d-inline-block">Uredi</a> <!-- Edit Button -->
+                                <form asp-action="DeleteUsluga" method="post" class="d-inline-block ml-2"> <!-- Delete form with margin -->
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="hidden" name="opgId" value="@opgId" />
+                                    <input type="submit" value="Obriši" class="btn btn-danger" />
+                                </form>
+                            </td>
                         </tr>
+
                     }
                 </tbody>
             </table>
         </div>
+
+
+        <div class="tab-content mt-3">
+            <!-- Existing tab content -->
+            <!-- New "Imanja Vlasnika" tab content -->
+            <div class="tab-pane" id="imanjaVlasnika">
+                <a href="@Url.Action("CreateImanjeVlasnik", new { opgId = Model.Id })" class="btn btn-primary mb-3">Create New Imanje Vlasnika</a>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Katastar</th>
+                            <th>Povrsina</th>
+                            <th>Vlasnik</th>
+                            <th>Proizvod</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.ImanjaVlasnika)
+                        {
+                            <tr>
+                                <td>@item.Imanje.Katastar</td>
+                                <td>@item.Imanje.Povrsina</td>
+                                <td>@item.Vlasnik.Ime @item.Vlasnik.Prezime</td>
+                                <td>@item.Proizvod.Naziv</td>
+                                <td>
+                                    <a href="@Url.Action("EditImanjeVlasnik", new { id = item.Id, opgId = Model.Id })" class="btn btn-secondary btn-sm">Edit</a>
+                                    <form asp-action="DeleteImanjeVlasnik" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="opgId" value="@Model.Id" />
+                                        <input type="submit" value="Delete" class="btn btn-danger btn-sm ml-1" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 
     </div>
 </div>
@@ -140,3 +211,12 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var activeTab = '@ViewContext.HttpContext.Request.Query["activeTab"]';
+        if (activeTab) {
+            $('.nav-tabs a[href="#' + activeTab + '"]').tab('show');
+        }
+    });
+</script>
+

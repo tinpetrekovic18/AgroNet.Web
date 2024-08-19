@@ -19,11 +19,11 @@
 
 
 <div class="container">
-    <h2 class="text-center">Stvori Stroj/Alat</h2>
+    <h2 class="text-center">Uredi Stroj/Alat</h2>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <!-- Adjust the column size as needed -->
-    <form asp-action="CreateStrojAlat" method="post">
+    <form asp-action="EditStrojAlat" method="post">
         <div class="form-group">
             <label asp-for="Naziv" class="control-label"></label>
             <input asp-for="Naziv" class="form-control" />
@@ -37,19 +37,17 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="VrstaStrojaAlataId" class="control-label">Vrsta stroja/alata</label>
+                    <label asp-for="VrstaStrojaAlataId" class="control-label">Vrsta stroja/alata</label>
             <select asp-for="VrstaStrojaAlataId" class="form-control" asp-items="vrstaStrojaAlataList"></select>
             <span asp-validation-for="VrstaStrojaAlataId" class="text-danger"></span>
         </div>
-
         <div class="form-group mt-3 text-center">
         <input type="hidden" name="opgId" value="@opgId" />
         <button type="submit" class="btn btn-primary">Spremi</button>
         <a asp-action="Edit" asp-route-id="@opgId" class="btn btn-secondary">Odustani</a>
         </div>
     </form>
-</div
+</div>
 </div>
 </div>
 
-    

@@ -1,15 +1,15 @@
-﻿@model AgroNet.Model.StrojAlat
+﻿@model AgroNet.Model.Usluga
 @{
     var opgId = ViewBag.OPGId;
-    var vrstaStrojaAlataList = ViewBag.VrstaStrojaAlataList as IEnumerable<SelectListItem>;
+    var vrstaUslugeList = ViewBag.VrstaUslugeList as IEnumerable<SelectListItem>;
 }
 <div class="container">
     <!-- Breadcrumb navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="@Url.Action("Edit", new { id = opgId, activeTab = "strojeviAlati" })">
-                    Moji strojevi/alati
+                <a href="@Url.Action("Edit", new { id = opgId, activeTab = "usluge" })">
+                    Moje usluge
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Create Proizvod</li>
@@ -19,11 +19,11 @@
 
 
 <div class="container">
-    <h2 class="text-center">Stvori Stroj/Alat</h2>
+    <h2 class="text-center">Uredi Uslugu</h2>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <!-- Adjust the column size as needed -->
-    <form asp-action="CreateStrojAlat" method="post">
+    <form asp-action="EditUsluga" method="post">
         <div class="form-group">
             <label asp-for="Naziv" class="control-label"></label>
             <input asp-for="Naziv" class="form-control" />
@@ -37,19 +37,17 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="VrstaStrojaAlataId" class="control-label">Vrsta stroja/alata</label>
-            <select asp-for="VrstaStrojaAlataId" class="form-control" asp-items="vrstaStrojaAlataList"></select>
-            <span asp-validation-for="VrstaStrojaAlataId" class="text-danger"></span>
+                    <label asp-for="VrstaUslugeId" class="control-label">Vrsta usluge</label>
+            <select asp-for="VrstaUslugeId" class="form-control" asp-items="vrstaUslugeList"></select>
+            <span asp-validation-for="VrstaUslugeId" class="text-danger"></span>
         </div>
-
         <div class="form-group mt-3 text-center">
         <input type="hidden" name="opgId" value="@opgId" />
         <button type="submit" class="btn btn-primary">Spremi</button>
-        <a asp-action="Edit" asp-route-id="@opgId" class="btn btn-secondary">Odustani</a>
+                    <a asp-action="Edit" asp-route-id="@opgId" class="btn btn-secondary">Odustani</a>
         </div>
     </form>
-</div
 </div>
+    </div>
 </div>
 
-    

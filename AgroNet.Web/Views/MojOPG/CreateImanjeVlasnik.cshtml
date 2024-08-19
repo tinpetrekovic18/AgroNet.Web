@@ -1,0 +1,28 @@
+﻿@model AgroNet.Model.ImanjeVlasnik
+
+<div class="container">
+    <h2>Create Imanje Vlasnika</h2>
+    <form asp-action="CreateImanjeVlasnik" method="post">
+        <div class="form-group">
+            <label asp-for="VlasnikId" class="control-label">Vlasnik</label>
+            <select asp-for="VlasnikId" class="form-control" asp-items="ViewBag.Vlasnici"></select>
+            <span asp-validation-for="VlasnikId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ImanjeId" class="control-label">Imanje</label>
+            <select asp-for="ImanjeId" class="form-control" asp-items="ViewBag.Imanja"></select>
+            <span asp-validation-for="ImanjeId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProizvodId" class="control-label">Proizvod</label>
+            <select asp-for="ProizvodId" class="form-control" asp-items="ViewBag.Proizvodi"></select>
+            <span asp-validation-for="ProizvodId" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" name="opgId" value="@ViewBag.OPGId" />
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a href="@Url.Action("Edit", new { id = ViewBag.OPGId, activeTab = "imanjaVlasnika" })" class="btn btn-secondary ml-2">Cancel</a>
+    </form>
+</div>
