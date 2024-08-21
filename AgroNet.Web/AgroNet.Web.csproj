@@ -28,4 +28,8 @@
     <ProjectReference Include="..\AgroNet.Model\AgroNet.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Usluge\" />
+  </ItemGroup>
+
 </Project>

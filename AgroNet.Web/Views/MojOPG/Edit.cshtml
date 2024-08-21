@@ -78,6 +78,7 @@
                         <th>Naziv</th>
                         <th>Opis</th>
                         <th>Vrsta proizvoda</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,6 +110,7 @@
                         <th>Naziv</th>
                         <th>Opis</th>
                         <th>Vrsta stroja/alata</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -140,6 +142,7 @@
                         <th>Naziv</th>
                         <th>Opis</th>
                         <th>Vrsta usluge</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -164,44 +167,42 @@
             </table>
         </div>
 
-
-        <div class="tab-content mt-3">
-            <!-- Existing tab content -->
-            <!-- New "Imanja Vlasnika" tab content -->
-            <div class="tab-pane" id="imanjaVlasnika">
-                <a href="@Url.Action("CreateImanjeVlasnik", new { opgId = Model.Id })" class="btn btn-primary mb-3">Create New Imanje Vlasnika</a>
-                <table class="table">
-                    <thead>
+        <div class="tab-pane" id="imanjaVlasnika">
+            <a href="@Url.Action("CreateImanjeVlasnik", new { opgId = Model.Id })" class="btn btn-primary mb-3">Create New Imanje Vlasnika</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Katastar</th>
+                        <th>Povrsina</th>
+                        <th>Proizvod</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.ImanjaVlasnici)
+                    {
                         <tr>
-                            <th>Katastar</th>
-                            <th>Povrsina</th>
-                            <th>Vlasnik</th>
-                            <th>Proizvod</th>
-                            <th>Actions</th>
+                            <td>@item.Katastar</td>
+                            <td>@item.Povrsina</td>
+                            <td>@item.Proizvod</td>
+                            <td>
+                                <a href="@Url.Action("EditImanjeVlasnik", new { id = item.Id, proizvodID=item.ProizvodId, vlasnikID=item.Vlasnik, imanjeID=item.ImanjeId,  opgId = opgId})" class="btn btn-warning d-inline-block">Uredi</a>
+                                <form asp-action="DeleteImanjeVlasnik" method="post" class="d-inline-block ml-2">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="hidden" name="opgId"  value="@opgId" />
+                                    <input type="submit" value="Obriši" class="btn btn-danger" />
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ViewBag.ImanjaVlasnika)
-                        {
-                            <tr>
-                                <td>@item.Imanje.Katastar</td>
-                                <td>@item.Imanje.Povrsina</td>
-                                <td>@item.Vlasnik.Ime @item.Vlasnik.Prezime</td>
-                                <td>@item.Proizvod.Naziv</td>
-                                <td>
-                                    <a href="@Url.Action("EditImanjeVlasnik", new { id = item.Id, opgId = Model.Id })" class="btn btn-secondary btn-sm">Edit</a>
-                                    <form asp-action="DeleteImanjeVlasnik" method="post" style="display:inline;">
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <input type="hidden" name="opgId" value="@Model.Id" />
-                                        <input type="submit" value="Delete" class="btn btn-danger btn-sm ml-1" />
-                                    </form>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
+
+
+        
+
+        
 
 
     </div>

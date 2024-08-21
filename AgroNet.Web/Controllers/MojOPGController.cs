@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 public class MojOPGController : Controller
 {
     private readonly AgroNetDbContext _context;
     private readonly UserManager<AppUser> _userManager;
 
+    
     public MojOPGController(AgroNetDbContext context, UserManager<AppUser> userManager)
     {
         _context = context;
@@ -187,6 +189,8 @@ public class MojOPGController : Controller
 
         ViewBag.Mjesta = new SelectList(_context.Mjesta, "Id", "Naziv", opg.MjestoId);
         ViewBag.Djelatnosti = new SelectList(_context.Djelatnosti, "Id", "Naziv", selectedDjelatnostId);
+        
+
 
         ViewBag.Proizvodi = _context.OPGProizvodi
     .Where(op => op.OPGId == id)
@@ -224,14 +228,60 @@ public class MojOPGController : Controller
     })
     .ToList();
 
+        var userEmail = User.Identity.Name;
+        if (userEmail == null)
+        {
+            return Unauthorized("User is not logged in.");
+        }
+
+        var vlasnik = _context.Vlasnici.FirstOrDefault(v => v.Email == userEmail);
+        if (vlasnik == null)
+        {
+            return NotFound("Vlasnik not found.");
+        }
+
+        ViewBag.ImanjaVlasnici=_context.ImanjaVlasnici
+            .Where(iv=>iv.Vlasnik.Id==vlasnik.Id)
+            .Select(iv => new
+            {
+                iv.Id,
+                ImanjeId=iv.Imanje.Id, // Include Id
+                iv.Imanje.Katastar,
+                iv.Imanje.Povrsina,
+                Proizvod = iv.Proizvod.Naziv,
+                ProizvodId=iv.Proizvod.Id,
+                Vlasnik=iv.VlasnikId
+           
+            })
+    .ToList();
+
+
+       /* ViewBag.Imanja = _context.ImanjaVlasnici
+        .Where(iv => iv.Vlasnik.Id == _context.VlasniciOPG
+        .Where(vo => vo.OPGId == id)
+        .Select(vo => vo.VlasnikId)
+        .FirstOrDefault())
+        .Select(iv => new
+        {
+            iv.Imanje.Id,           // Imanje Id
+            iv.Imanje.Katastar,     // Katastar of the Imanje
+            iv.Imanje.Povrsina,     // Povrsina of the Imanje
+            VlasnikIme = iv.Vlasnik.Ime,
+            VlasnikPrezime = iv.Vlasnik.Prezime,
+            OPGNaziv = _context.OPGs
+                    .Where(opg => opg.Id == id)
+                    .Select(opg => opg.Naziv)
+                    .FirstOrDefault()  // Get the OPG Naziv for the specific OPGId
+    })
+    .ToList();*/
+
+
+
+
 
         ViewBag.IsEditMode = true;
         return View("Edit", opg);
     }
-
-
-
-
 
     // GET: MojOPG/CreateProizvod
     public IActionResult CreateProizvod(int opgId)
@@ -268,10 +318,6 @@ public class MojOPGController : Controller
         ViewBag.VrstaProizvodaList = new SelectList(_context.VrsteProizvoda, "Id", "Naziv", proizvod.VrstaProizvodaId);
         return View(proizvod);
     }
-
-
-
-
 
     // POST: MojOPG/Edit
     [HttpPost]
@@ -330,9 +376,15 @@ public class MojOPGController : Controller
     public IActionResult DeleteProizvod(int id, int opgId)
     {
         var opgProizvod = _context.OPGProizvodi.FirstOrDefault(op => op.ProizvodId == id && op.OPGId == opgId);
+        var proizvod = _context.Proizvodi.FirstOrDefault(p => p.Id==opgProizvod.ProizvodId);
         if (opgProizvod != null)
         {
             _context.OPGProizvodi.Remove(opgProizvod);
+            _context.SaveChanges();
+        }
+        if (proizvod != null)
+        {
+            _context.Proizvodi.Remove(proizvod);
             _context.SaveChanges();
         }
 
@@ -345,13 +397,19 @@ public class MojOPGController : Controller
     public IActionResult DeleteStrojAlat(int id, int opgId)
     {
         var opgStrojAlat = _context.OPGStrojeviAlati.FirstOrDefault(os => os.StrojAlatId == id && os.OPGId == opgId);
+        var strojAlat = _context.StrojeviAlati.FirstOrDefault(sa => sa.Id == opgStrojAlat.StrojAlatId);
         if (opgStrojAlat != null)
         {
             _context.OPGStrojeviAlati.Remove(opgStrojAlat);
             _context.SaveChanges();
         }
+        if (strojAlat != null)
+        {
+            _context.StrojeviAlati.Remove(strojAlat);
+            _context.SaveChanges();
+        }
 
-            return RedirectToAction("Edit", new { id = opgId, activeTab = "strojeviAlati" });
+        return RedirectToAction("Edit", new { id = opgId, activeTab = "strojeviAlati" });
         
     }
 
@@ -361,13 +419,19 @@ public class MojOPGController : Controller
     public IActionResult DeleteUsluga(int id, int opgId)
     {
         var opgUsluga = _context.OPGUsluge.FirstOrDefault(ou => ou.UslugaId == id && ou.OPGId == opgId);
+        var usluga = _context.Usluge.FirstOrDefault(u => u.Id==opgUsluga.UslugaId);
         if (opgUsluga != null)
         {
             _context.OPGUsluge.Remove(opgUsluga);
             _context.SaveChanges();
         }
+        if (usluga != null)
+        {
+            _context.Usluge.Remove(usluga);
+            _context.SaveChanges();
+        }
 
-            return RedirectToAction("Edit", new { id = opgId, activeTab = "usluge" });
+        return RedirectToAction("Edit", new { id = opgId, activeTab = "usluge" });
     }
 
     // GET: MojOPG/EditProizvod/5
@@ -472,81 +536,166 @@ public class MojOPGController : Controller
     public IActionResult CreateImanjeVlasnik(int opgId)
     {
         ViewBag.OPGId = opgId;
-        ViewBag.Vlasnici = new SelectList(_context.Vlasnici, "Id", "Ime");
-        ViewBag.Imanja = new SelectList(_context.Imanja, "Id", "Katastar");
-        ViewBag.Proizvodi = new SelectList(_context.Proizvodi, "Id", "Naziv");
 
-        return View(new ImanjeVlasnik());
+        // Get the Vlasnik linked to this OPG
+        var vlasnikId = _context.VlasniciOPG
+            .Where(vo => vo.OPGId == opgId)
+            .Select(vo => vo.VlasnikId)
+            .FirstOrDefault();
+
+        if (vlasnikId == 0)
+        {
+            return NotFound("Vlasnik not found for the given OPG.");
+        }
+
+        // Get the Proizvodi linked to this OPG
+        var proizvodi = _context.OPGProizvodi
+            .Where(op => op.OPGId == opgId)
+            .Select(op => new { op.Proizvod.Id, op.Proizvod.Naziv })
+            .ToList();
+
+        ViewBag.Proizvodi = new SelectList(proizvodi, "Id", "Naziv");
+
+        return View(new ImanjeVlasnik { VlasnikId = vlasnikId, Imanje = new Imanje() });
     }
+
 
     [HttpPost]
     public IActionResult CreateImanjeVlasnik(ImanjeVlasnik imanjeVlasnik, int opgId)
     {
+        var userEmail = User.Identity.Name;
+        if (userEmail == null)
+        {
+            return Unauthorized("User is not logged in.");
+        }
+        var vlasnik = _context.Vlasnici.FirstOrDefault(v => v.Email == userEmail);
+        if (vlasnik == null)
+        {
+            return NotFound("Vlasnik not found.");
+        }
+
+        // Remove validation for the related entities
+        ModelState.Remove(nameof(imanjeVlasnik.Proizvod));
+        ModelState.Remove(nameof(imanjeVlasnik.Vlasnik));
+
         if (ModelState.IsValid)
         {
+            // Save the Imanje first
+            _context.Imanja.Add(imanjeVlasnik.Imanje);
+            _context.SaveChanges();
+
+            // Set related IDs
+            imanjeVlasnik.VlasnikId = vlasnik.Id;
+            imanjeVlasnik.ImanjeId = imanjeVlasnik.Imanje.Id;
+
             _context.ImanjaVlasnici.Add(imanjeVlasnik);
             _context.SaveChanges();
 
             return RedirectToAction("Edit", new { id = opgId, activeTab = "imanjaVlasnika" });
         }
 
+        // If ModelState is invalid, re-populate the ViewBag and return the view
         ViewBag.OPGId = opgId;
-        ViewBag.Vlasnici = new SelectList(_context.Vlasnici, "Id", "Ime");
-        ViewBag.Imanja = new SelectList(_context.Imanja, "Id", "Katastar");
-        ViewBag.Proizvodi = new SelectList(_context.Proizvodi, "Id", "Naziv");
+
+        var proizvodi = _context.OPGProizvodi
+            .Where(op => op.OPGId == opgId)
+            .Select(op => new { op.Proizvod.Id, op.Proizvod.Naziv })
+            .ToList();
+
+        ViewBag.Proizvodi = new SelectList(proizvodi, "Id", "Naziv");
 
         return View(imanjeVlasnik);
     }
 
+
+
+
     public IActionResult EditImanjeVlasnik(int id, int opgId)
     {
-        var imanjeVlasnik = _context.ImanjaVlasnici.Find(id);
+        // Load the ImanjeVlasnik entity by id
+        var imanjeVlasnik = _context.ImanjaVlasnici
+            .Include(iv => iv.Imanje)
+            .FirstOrDefault(iv => iv.Id == id);
+
         if (imanjeVlasnik == null)
         {
-            return NotFound();
+            return NotFound("ImanjeVlasnik not found.");
         }
 
+        // Load the OPG ID to keep the context
         ViewBag.OPGId = opgId;
-        ViewBag.Vlasnici = new SelectList(_context.Vlasnici, "Id", "Ime", imanjeVlasnik.VlasnikId);
-        ViewBag.Imanja = new SelectList(_context.Imanja, "Id", "Katastar", imanjeVlasnik.ImanjeId);
-        ViewBag.Proizvodi = new SelectList(_context.Proizvodi, "Id", "Naziv", imanjeVlasnik.ProizvodId);
+
+        // Load available Proizvodi for selection
+        var proizvodi = _context.OPGProizvodi
+            .Where(op => op.OPGId == opgId)
+            .Select(op => new { op.Proizvod.Id, op.Proizvod.Naziv })
+            .ToList();
+
+        ViewBag.Proizvodi = new SelectList(proizvodi, "Id", "Naziv", imanjeVlasnik.ProizvodId);
 
         return View(imanjeVlasnik);
     }
 
     [HttpPost]
-    public IActionResult EditImanjeVlasnik(ImanjeVlasnik imanjeVlasnik, int opgId)
-    {
+public IActionResult EditImanjeVlasnik(ImanjeVlasnik imanjeVlasnik, int opgId)
+{
+        ModelState.Remove(nameof(imanjeVlasnik.Proizvod));
+        ModelState.Remove(nameof(imanjeVlasnik.Vlasnik));
+
         if (ModelState.IsValid)
-        {
-            _context.Update(imanjeVlasnik);
+    {
+            // Update the Imanje entity
+            _context.Imanja.Update(imanjeVlasnik.Imanje);
+
+            // Update the ImanjeVlasnik entity
+            _context.ImanjaVlasnici.Update(imanjeVlasnik);
+
             _context.SaveChanges();
 
             return RedirectToAction("Edit", new { id = opgId, activeTab = "imanjaVlasnika" });
         }
 
+    // Update the Imanje entity
+    _context.Imanja.Update(imanjeVlasnik.Imanje);
+    
+    // Update the ImanjeVlasnik entity
+    _context.ImanjaVlasnici.Update(imanjeVlasnik);
+    
+    _context.SaveChanges();
+
+        // If ModelState is invalid, re-populate the ViewBag and return the view
         ViewBag.OPGId = opgId;
-        ViewBag.Vlasnici = new SelectList(_context.Vlasnici, "Id", "Ime", imanjeVlasnik.VlasnikId);
-        ViewBag.Imanja = new SelectList(_context.Imanja, "Id", "Katastar", imanjeVlasnik.ImanjeId);
-        ViewBag.Proizvodi = new SelectList(_context.Proizvodi, "Id", "Naziv", imanjeVlasnik.ProizvodId);
+
+        var proizvodi = _context.OPGProizvodi
+            .Where(op => op.OPGId == opgId)
+            .Select(op => new { op.Proizvod.Id, op.Proizvod.Naziv })
+            .ToList();
+
+        ViewBag.Proizvodi = new SelectList(proizvodi, "Id", "Naziv", imanjeVlasnik.ProizvodId);
 
         return View(imanjeVlasnik);
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult DeleteImanjeVlasnik(int id, int opgId)
     {
-        var imanjeVlasnik = _context.ImanjaVlasnici.Find(id);
-        if (imanjeVlasnik == null)
+        var imanjeVlasnik = _context.ImanjaVlasnici.FirstOrDefault(iv => iv.Id == id );
+        var imanje = _context.Imanja.FirstOrDefault(i => i.Id == imanjeVlasnik.ImanjeId);
+        if (imanjeVlasnik != null)
         {
-            return NotFound();
+            _context.ImanjaVlasnici.Remove(imanjeVlasnik);
+            _context.SaveChanges();
         }
-
-        _context.ImanjaVlasnici.Remove(imanjeVlasnik);
-        _context.SaveChanges();
+        if (imanje != null)
+        {
+            _context.Imanja.Remove(imanje);
+            _context.SaveChanges();
+        }
 
         return RedirectToAction("Edit", new { id = opgId, activeTab = "imanjaVlasnika" });
     }
+
 
 
 }
