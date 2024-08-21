@@ -1,0 +1,25 @@
+﻿@model IEnumerable<AgroNet.Model.Usluga>
+
+@{
+    ViewBag.Title = "Usluge Grid";
+}
+<head>
+    <link href="Usluge.css" rel="stylesheet" />
+</head>
+
+<div class="container">
+    <div class="row">
+        @foreach (var usluga in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@usluga.Naziv</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@usluga.VrstaUsluge?.Naziv</h6>
+                        <p class="card-text">@usluga.Opis</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
