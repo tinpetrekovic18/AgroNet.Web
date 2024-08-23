@@ -1,22 +1,25 @@
-﻿@model IEnumerable<AgroNet.Model.Usluga>
+﻿@model IEnumerable<AgroNet.Model.OPGUsluga>
 
 @{
     ViewBag.Title = "Usluge Grid";
 }
-<head>
-    <link href="Usluge.css" rel="stylesheet" />
-</head>
+
+
 
 <div class="container">
+    <div style="margin-top: 20px; margin-bottom: 10px;">
+        <partial name="UslugeFilter" model="new UslugeFilterModel()" />
+    </div>
     <div class="row">
-        @foreach (var usluga in Model)
+        @foreach (var opgUsluga in Model)
         {
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">@usluga.Naziv</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@usluga.VrstaUsluge?.Naziv</h6>
-                        <p class="card-text">@usluga.Opis</p>
+                        <h5 class="card-title">@opgUsluga.Usluga.Naziv</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@opgUsluga.Usluga.VrstaUsluge?.Naziv</h6>
+                        <p class="card-text">@opgUsluga.OPG.Naziv</p>
+                        <p class="card-text">@opgUsluga.OPG.Mjesto.Naziv</p>
                     </div>
                 </div>
             </div>

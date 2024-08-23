@@ -1,0 +1,33 @@
+﻿﻿@using AgroNet.Web.Models
+
+
+@model UslugeFilterModel
+
+
+<form action="@Url.Action("Usluge")" method="get">
+    <div class="row">
+        <div class="col">
+            <input asp-for="NazivUsluge" class="form-control" type="text" placeholder="Usluga" />
+        </div>
+        <div class="col">
+            <select asp-for="VrstaUslugeId" class="form-control" asp-items="ViewBag.VrsteUsluga">
+                <!-- The "-- All --" option is included from the controller -->
+            </select>
+        </div>
+        <div class="col">
+            <input asp-for="NazivOPG" class="form-control" type="text" placeholder="OPG" />
+        </div>
+        <div class="col">
+            <input asp-for="NazivMjesta" class="form-control" type="text" placeholder="Mjesto" />
+        </div>
+        <div class="col">
+            <select asp-for="ZupanijaId" class="form-control" asp-items="ViewBag.Zupanije">
+                <!-- The "-- All --" option is included from the controller -->
+            </select>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-outline-info">Pretraga</button>
+        </div>
+    </div>
+</form>
+
