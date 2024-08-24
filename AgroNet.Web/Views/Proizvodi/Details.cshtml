@@ -1,0 +1,26 @@
+﻿@model AgroNet.Web.Models.ProizvodDetailsViewModel
+
+<h2>Details for @Model.Proizvod.Proizvod.Naziv</h2>
+<p><strong>Vrsta proizvoda:</strong> @Model.Proizvod.Proizvod.VrstaProizvoda?.Naziv</p>
+<p><strong>Opis proizvoda:</strong> @Model.Proizvod.Proizvod.Opis</p>
+
+<h3>@Model.Proizvod.OPG.Naziv </h3>
+<p><strong>Adresa:</strong> @Model.Proizvod.OPG.Adresa</p>
+<p><strong>IBAN:</strong> @Model.Proizvod.OPG.IBAN</p>
+<p><strong>Mjesto:</strong> @Model.Proizvod.OPG.Mjesto.Naziv</p>
+<p><strong>Županija:</strong> @Model.Proizvod.OPG.Mjesto.Zupanija?.Naziv</p>
+
+@if (Model.Vlasnik != null)
+{
+    <h3>Vlasnik Information</h3>
+    <p><strong>Ime:</strong> @Model.Vlasnik.Ime</p>
+    <p><strong>Prezime:</strong> @Model.Vlasnik.Prezime</p>
+    <p><strong>Email:</strong> @Model.Vlasnik.Email</p>
+    <p><strong>Broj Telefona:</strong> @Model.Vlasnik.BrojTelefona</p>
+}
+else
+{
+    <p>No owner information available for this OPG.</p>
+}
+
+<a class="btn btn-primary mt-3" href="@Url.Action("Proizvodi")">Povratak na Proizvode</a>

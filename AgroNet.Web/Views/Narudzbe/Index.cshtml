@@ -1,0 +1,111 @@
+﻿@model IEnumerable<AgroNet.Web.Models.NarudzbaViewModel>
+
+@{
+    ViewBag.Title = "Narudžbe";
+    var currentUser = User.Identity.Name;
+}
+
+<div class="container">
+    <h2>Narudžbe</h2>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link @(!ViewBag.ShowFinished ? "active" : "")" href="@Url.Action("Index", new { showFinished = false })">Active Orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(ViewBag.ShowFinished ? "active" : "")" href="@Url.Action("Index", new { showFinished = true })">Finished Orders</a>
+        </li>
+    </ul>
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Kupac OPG</th>
+                <th>Prodavac OPG</th>
+                <th>Datum Narudžbe</th>
+                <th>Datum Isporuke</th>
+                <th>Status Narudžbe</th>
+                <th>Stavka</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var narudzba in Model)
+            {
+                <tr>
+                    <td>@narudzba.Id</td>
+                    <td>@narudzba.KupacOPGNaziv</td>
+                    <td>@narudzba.ProdavacOPGNaziv</td>
+                    <td>@narudzba.DatumNarudzbe?.ToString("dd.MM.yyyy")</td>
+                    <td>@narudzba.DatumIsporuke?.ToString("dd.MM.yyyy")</td>
+                    <td>@narudzba.StatusNarudzbeNaziv</td>
+                    <td>
+                        @if (narudzba.StavkeUsluga.Any())
+                        {
+                            @narudzba.StavkeUsluga.First().Naziv
+                        }
+                        @if (narudzba.StavkeProizvodi.Any())
+                        {
+                            @narudzba.StavkeProizvodi.First().Naziv
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Detalji</a>
+                        @if (narudzba.StatusNarudzbeNaziv == "Završeno" || narudzba.StatusNarudzbeNaziv == "Odbijeno" || narudzba.StatusNarudzbeNaziv == "Otkazano")
+                        {
+                            <p>Zaključano</p>
+                        }
+                        else if (narudzba.IsKupac)
+                        {
+                            <a href="@Url.Action("Edit", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Edit</a>
+                            <form asp-action="Cancel" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                        }
+                        else if (narudzba.IsProdavac)
+                        {
+                            if (narudzba.StatusNarudzbeNaziv == "Potvrđeno")
+                            {
+                                <form asp-action="Finish" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-primary btn-sm">Finish</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="Accept" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                </form>
+                                <form asp-action="Decline" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                </form>
+                            }
+                        }
+                        else if(narudzba.IsBoth)
+                        {
+                            <a href="@Url.Action("Edit", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Edit</a>
+                            <form asp-action="Cancel" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                            if (narudzba.StatusNarudzbeNaziv == "Potvrđeno")
+                            {
+                                <form asp-action="Finish" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-primary btn-sm">Finish</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="Accept" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                </form>
+                                <form asp-action="Decline" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                </form>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,26 @@
+﻿@model AgroNet.Web.Models.UslugaDetailsViewModel
+
+<h2>@Model.Usluga.Usluga.Naziv</h2>
+<p><strong>Vrsta usluge:</strong> @Model.Usluga.Usluga.VrstaUsluge?.Naziv</p>
+<p><strong>Opis usluge:</strong> @Model.Usluga.Usluga.Opis</p>
+
+<h3>@Model.Usluga.OPG.Naziv </h3>
+<p><strong>Adresa:</strong> @Model.Usluga.OPG.Adresa</p>
+<p><strong>IBAN:</strong> @Model.Usluga.OPG.IBAN</p>
+<p><strong>Mjesto:</strong> @Model.Usluga.OPG.Mjesto.Naziv</p>
+<p><strong>Županija:</strong> @Model.Usluga.OPG.Mjesto.Zupanija?.Naziv</p>
+
+@if (Model.Vlasnik != null)
+{
+    <h3>Vlasnik</h3>
+    <p><strong>Ime:</strong> @Model.Vlasnik.Ime</p>
+    <p><strong>Prezime:</strong> @Model.Vlasnik.Prezime</p>
+    <p><strong>Email:</strong> @Model.Vlasnik.Email</p>
+    <p><strong>Broj Telefona:</strong> @Model.Vlasnik.BrojTelefona</p>
+}
+else
+{
+    <p>No owner information available for this OPG.</p>
+}
+
+<a class="btn btn-primary mt-3" href="@Url.Action("Usluge")">Povratak na Usluge</a>

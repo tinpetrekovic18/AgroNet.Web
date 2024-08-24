@@ -24,6 +24,8 @@ namespace AgroNet.Model
         public int MjestoId { get; set; }
 
         public Mjesto Mjesto { get; set; }
+
+
     }
 
 }

@@ -31,6 +31,11 @@ namespace AgroNet.Model
         public OPG KupacOPG { get; set; }
         public OPG ProdavacOPG { get; set; }
         public StatusNarudzbe StatusNarudzbe { get; set; }
+
+        public ICollection<StavkaNarudzbeUsluga> StavkeNarudzbeUsluga { get; set; } = new List<StavkaNarudzbeUsluga>();
+        public ICollection<StavkaNarudzbeProizvod> StavkeNarudzbeProizvod { get; set; } = new List<StavkaNarudzbeProizvod>();
+
+
     }
 
 }

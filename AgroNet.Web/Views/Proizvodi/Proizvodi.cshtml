@@ -1,0 +1,30 @@
+﻿@model IEnumerable<AgroNet.Model.OPGProizvod>
+
+@{
+    ViewBag.Title = "Proizvodi Grid";
+}
+
+<div class="container">
+    <div style="margin-top: 20px; margin-bottom: 10px;">
+        <partial name="_ProizvodFilter" model="new ProizvodFilterModel()" />
+    </div>
+    <div class="row">
+        @foreach (var proizvod in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@proizvod.Proizvod.Naziv</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@proizvod.Proizvod.VrstaProizvoda?.Naziv</h6>
+                        <p class="card-text">@proizvod.OPG.Naziv</p>
+                        <p class="card-text">@proizvod.OPG.Mjesto.Naziv</p>
+                        <div class="d-flex align-items-center">
+                            <a class="btn btn-info me-2" href="@Url.Action("Details", "Proizvodi", new { id = proizvod.Id })">Više</a>
+                            <a class="btn btn-primary" href="@Url.Action("CreateOrder", "Proizvodi", new { proizvodId = proizvod.Proizvod.Id, prodavacOpgId = proizvod.OPG.Id })">Naruči</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

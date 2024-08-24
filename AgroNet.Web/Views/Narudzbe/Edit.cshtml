@@ -1,0 +1,48 @@
+﻿@model AgroNet.Web.Models.NarudzbaEditViewModel
+
+@{
+    ViewBag.Title = "Edit Narudžba";
+}
+
+<div class="container">
+    <h2>Edit Narudžba</h2>
+
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="KupacOPGId" class="control-label">Kupac OPG</label>
+            <input asp-for="KupacOPGId" class="form-control" />
+            <span asp-validation-for="KupacOPGId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProdavacOPGId" class="control-label">Prodavac OPG</label>
+            <input asp-for="ProdavacOPGId" class="form-control" />
+            <span asp-validation-for="ProdavacOPGId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DatumNarudzbe" class="control-label">Datum Narudžbe</label>
+            <input asp-for="DatumNarudzbe" class="form-control" />
+            <span asp-validation-for="DatumNarudzbe" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DatumIsporuke" class="control-label">Datum Isporuke</label>
+            <input asp-for="DatumIsporuke" class="form-control" />
+            <span asp-validation-for="DatumIsporuke" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="StatusNarudzbeId" class="control-label">Status Narudžbe</label>
+            <input asp-for="StatusNarudzbeId" class="form-control" />
+            <span asp-validation-for="StatusNarudzbeId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

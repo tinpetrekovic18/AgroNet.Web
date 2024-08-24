@@ -1,0 +1,27 @@
+﻿@model IEnumerable<AgroNet.Model.OPG>
+
+@{
+    ViewBag.Title = "OPG Grid";
+}
+
+<div class="container">
+    <div style="margin-top: 20px; margin-bottom: 10px;">
+        <partial name="_OPGFilter" model="new OPGFilterModel()" />
+    </div>
+    <div class="row">
+        @foreach (var opg in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@opg.Naziv</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@opg.Mjesto.Naziv, @opg.Mjesto.Zupanija?.Naziv</h6>
+                        <p class="card-text">Adresa: @opg.Adresa</p>
+                        <p class="card-text">IBAN: @opg.IBAN</p>
+                        <a class="btn btn-primary" href="@Url.Action("Details", "OPG", new { id = opg.Id })">Više</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

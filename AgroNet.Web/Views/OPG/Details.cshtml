@@ -1,0 +1,140 @@
+﻿@model AgroNet.Web.Models.OPGDetailsViewModel
+
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("OPG")">
+                    OPG-ovi
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.OPG.Naziv</li>
+        </ol>
+    </nav>
+</div>
+
+<h2>@Model.OPG.Naziv</h2>
+<p><strong>Adresa:</strong> @Model.OPG.Adresa</p>
+<p><strong>IBAN:</strong> @Model.OPG.IBAN</p>
+<p><strong>Mjesto:</strong> @Model.OPG.Mjesto.Naziv</p>
+<p><strong>Županija:</strong> @Model.OPG.Mjesto.Zupanija?.Naziv</p>
+<p><strong>Djelatnost:</strong> @Model.Djelatnost.Naziv</p>  
+
+<h3>Vlasnik</h3>
+@if (Model.Vlasnici.Any())
+{
+    
+        @foreach (var vlasnik in Model.Vlasnici)
+        {
+            <p><strong>Ime:</strong> @vlasnik.Ime</p>
+            <p><strong>Prezime:</strong> @vlasnik.Prezime</p>
+            <p><strong>Email:</strong> @vlasnik.Email</p>
+            <p><strong>Broj Telefona:</strong> @vlasnik.BrojTelefona</p>
+        }
+    
+}
+else
+{
+    <p>No owner information available for this OPG.</p>
+}
+
+
+<hr />
+
+<h3>OPG Related Information</h3>
+
+<ul class="nav nav-tabs" id="opgTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="usluge-tab" data-bs-toggle="tab" href="#usluge" role="tab" aria-controls="usluge" aria-selected="true">Usluge</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="proizvodi-tab" data-bs-toggle="tab" href="#proizvodi" role="tab" aria-controls="proizvodi" aria-selected="false">Proizvodi</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="strojeviAlati-tab" data-bs-toggle="tab" href="#strojeviAlati" role="tab" aria-controls="strojeviAlati" aria-selected="false">Strojevi i Alati</a>
+    </li>
+</ul>
+
+<div class="tab-content" id="opgTabContent">
+    <div class="tab-pane fade show active" id="usluge" role="tabpanel" aria-labelledby="usluge-tab">
+        @if (Model.Usluge.Any())
+        {
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Naziv Usluge</th>
+                        <th>Vrsta Usluge</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var usluga in Model.Usluge)
+                    {
+                        <tr>
+                            <td>@usluga.Usluga.Naziv</td>
+                            <td>@usluga.Usluga.VrstaUsluge?.Naziv</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No services available for this OPG.</p>
+        }
+    </div>
+
+    <div class="tab-pane fade" id="proizvodi" role="tabpanel" aria-labelledby="proizvodi-tab">
+        @if (Model.Proizvodi.Any())
+        {
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Naziv Proizvoda</th>
+                        <th>Vrsta Proizvoda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var proizvod in Model.Proizvodi)
+                    {
+                        <tr>
+                            <td>@proizvod.Proizvod.Naziv</td>
+                            <td>@proizvod.Proizvod.VrstaProizvoda?.Naziv</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No products available for this OPG.</p>
+        }
+    </div>
+
+    <div class="tab-pane fade" id="strojeviAlati" role="tabpanel" aria-labelledby="strojeviAlati-tab">
+        @if (Model.StrojeviAlati.Any())
+        {
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Naziv Stroja/Alata</th>
+                        <th>Opis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var strojAlat in Model.StrojeviAlati)
+                    {
+                        <tr>
+                            <td>@strojAlat.StrojAlat.Naziv</td>
+                            <td>@strojAlat.StrojAlat.Opis</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No machinery or tools available for this OPG.</p>
+        }
+    </div>
+</div>

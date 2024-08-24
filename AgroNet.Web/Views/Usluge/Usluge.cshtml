@@ -4,8 +4,6 @@
     ViewBag.Title = "Usluge Grid";
 }
 
-
-
 <div class="container">
     <div style="margin-top: 20px; margin-bottom: 10px;">
         <partial name="UslugeFilter" model="new UslugeFilterModel()" />
@@ -20,6 +18,12 @@
                         <h6 class="card-subtitle mb-2 text-muted">@opgUsluga.Usluga.VrstaUsluge?.Naziv</h6>
                         <p class="card-text">@opgUsluga.OPG.Naziv</p>
                         <p class="card-text">@opgUsluga.OPG.Mjesto.Naziv</p>
+                        
+                        <div class="d-flex align-items-center">
+                            <a class="btn btn-info me-2" href="@Url.Action("Details", new { id = opgUsluga.Id })">Više</a>
+                            <a class="btn btn-primary" href="@Url.Action("CreateOrder", "Usluge", new { uslugaId = opgUsluga.Usluga.Id, prodavacOpgId = opgUsluga.OPG.Id })">Naruči</a>
+                        </div>
+
                     </div>
                 </div>
             </div>

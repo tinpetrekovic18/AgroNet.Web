@@ -1,0 +1,140 @@
+﻿@model AgroNet.Web.Models.NarudzbaDetailsViewModel
+
+@{
+    ViewBag.Title = "Narudžba Details";
+}
+
+<div class="container">
+    <h2>Detalji Narudžbe @Model.Narudzba.Id</h2>
+
+    <div>
+        <h4>General Information</h4>
+        <dl class="dl-horizontal">
+            <dt>Kupac OPG:</dt>
+            <dd>@Model.Narudzba.KupacOPG?.Naziv ?? "N/A"</dd>
+            <dt>Prodavac OPG:</dt>
+            <dd>@Model.Narudzba.ProdavacOPG?.Naziv ?? "N/A"</dd>
+            <dt>Datum Narudžbe:</dt>
+            <dd>@Model.Narudzba.DatumNarudzbe?.ToString("dd.MM.yyyy") ?? "N/A"</dd>
+            <dt>Datum Isporuke:</dt>
+            <dd>@Model.Narudzba.DatumIsporuke?.ToString("dd.MM.yyyy") ?? "N/A"</dd>
+            <dt>Status Narudžbe:</dt>
+            <dd>@Model.Narudzba.StatusNarudzbe?.Naziv ?? "N/A"</dd>
+        </dl>
+    </div>
+
+    <div>
+        <h4>Stavke Usluga</h4>
+        @if (Model.StavkeUsluga.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Usluga</th>
+                        <th>Količina</th>
+                        <th>Jedinična Cijena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var stavka in Model.StavkeUsluga)
+                    {
+                        <tr>
+                            <td>@stavka.Usluga.Naziv</td>
+                            <td>@stavka.Kolicina</td>
+                            <td>@stavka.JedinicnaCijena?.ToString("0.00")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No service items found.</p>
+        }
+    </div>
+
+    <div>
+        <h4>Stavke Proizvoda</h4>
+        @if (Model.StavkeProizvodi.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Proizvod</th>
+                        <th>Količina</th>
+                        <th>Jedinična Cijena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var stavka in Model.StavkeProizvodi)
+                    {
+                        <tr>
+                            <td>@stavka.Proizvod.Naziv</td>
+                            <td>@stavka.Kolicina</td>
+                            <td>@stavka.JedinicnaCijena?.ToString("0.00")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No product items found.</p>
+        }
+    </div>
+
+    <div>
+        @* Implementing the same button logic as in the table *@
+        @if (Model.Narudzba.StatusNarudzbe.Naziv == "Završeno" || Model.Narudzba.StatusNarudzbe.Naziv == "Odbijeno" || Model.Narudzba.StatusNarudzbe.Naziv == "Otkazano")
+        {
+            <p>Zaključano</p>
+        }
+        else if (Model.IsKupac)
+        {
+            <a href="@Url.Action("Edit", new { id = Model.Narudzba.Id })" class="btn btn-warning">Edit</a>
+            <form asp-action="Cancel" asp-route-id="@Model.Narudzba.Id" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Cancel</button>
+            </form>
+        }
+        else if (Model.IsProdavac)
+        {
+            if (Model.Narudzba.StatusNarudzbe.Naziv == "Potvrđeno")
+            {
+                <form asp-action="Finish" asp-route-id="@Model.Narudzba.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-primary">Finish</button>
+                </form>
+            }
+            else
+            {
+                <form asp-action="Accept" asp-route-id="@Model.Narudzba.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-success">Accept</button>
+                </form>
+                <form asp-action="Decline" asp-route-id="@Model.Narudzba.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Decline</button>
+                </form>
+            }
+        }
+        else if (Model.IsBoth)
+        {
+            <a href="@Url.Action("Edit", new { id = Model.Narudzba.Id })" class="btn btn-warning">Edit</a>
+            <form asp-action="Cancel" asp-route-id="@Model.Narudzba.Id" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Cancel</button>
+            </form>
+            if (Model.Narudzba.StatusNarudzbe.Naziv == "Potvrđeno")
+            {
+                <form asp-action="Finish" asp-route-id="@Model.Narudzba.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-primary">Finish</button>
+                </form>
+            }
+            else
+            {
+                <form asp-action="Accept" asp-route-id="@Model.Narudzba.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-success">Accept</button>
+                </form>
+                <form asp-action="Decline" asp-route-id="@Model.Narudzba.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Decline</button>
+                </form>
+            }
+        }
+    </div>
+</div>

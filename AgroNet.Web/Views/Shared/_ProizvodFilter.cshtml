@@ -1,0 +1,28 @@
+﻿@model AgroNet.Web.Models.ProizvodFilterModel
+
+<form action="@Url.Action("Proizvodi")" method="get">
+    <div class="row">
+        <div class="col">
+            <input asp-for="NazivProizvoda" class="form-control" type="text" placeholder="Proizvod" />
+        </div>
+        <div class="col">
+            <select asp-for="VrstaProizvodaId" class="form-control" asp-items="ViewBag.VrsteProizvoda">
+                <option value="">Sve vrste proizvoda</option>
+            </select>
+        </div>
+        <div class="col">
+            <input asp-for="NazivOPG" class="form-control" type="text" placeholder="OPG" />
+        </div>
+        <div class="col">
+            <input asp-for="NazivMjesta" class="form-control" type="text" placeholder="Mjesto" />
+        </div>
+         <div class="col">
+            <select asp-for="ZupanijaId" class="form-control" asp-items="ViewBag.Zupanije">
+               <option value="">Sve županije</option>
+            </select>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-outline-info">Pretraga</button>
+        </div>
+    </div>
+</form>
