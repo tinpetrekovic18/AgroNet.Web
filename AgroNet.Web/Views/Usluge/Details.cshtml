@@ -36,5 +36,7 @@ else
 {
     <p>No owner information available for this OPG.</p>
 }
-
-<a class="btn btn-primary mt-3" href="@Url.Action("Usluge")">Povratak na Usluge</a>
+<div class="d-flex align-items-center mt-3">
+    <a class="btn btn-secondary me-3"  href="@Url.Action("Usluge")">Povratak na Usluge</a>
+<a class="btn btn-primary me-3" href="@Url.Action("CreateOrder", "Usluge", new { uslugaId = Model.Usluga.Usluga.Id, prodavacOpgId = Model.Usluga.OPG.Id })">Naruči</a>
+</div>

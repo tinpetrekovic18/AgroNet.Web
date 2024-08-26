@@ -1,8 +1,56 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Container for authentication -->
+<div class="container">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="text-center" style="padding: 50px 0;">
+            <h1>Dobrodošli u AgroNet</h1>
+            <p>Molimo Vas da se prijavite ili registrirate ukoliko već nemate korisnički račun</p>
+            <a href="~/Identity/Account/Login" class="btn btn-primary btn-lg">Prijava</a>
+            <a href="~/Identity/Account/Register" class="btn btn-secondary btn-lg">Registracija</a>
+        </div>
+    }
+    else
+    {
+        <!-- First Container: Header Section -->
+        <div class="container-fluid bg-1 text-center" style="padding: 50px 0; background-color: #2c3e50; color: white;">
+            <h1 class="margin" style="font-size: 50px; font-weight: bold;">AgroNet</h1>
+            <div class="image-container" style="display: inline-block; position: relative;">
+                <img src="Slike/psenica.jpg" class="img-responsive img-circle margin" style="border-radius: 50%; max-width: 60%; height: auto;" alt="Wheat Image">
+            </div>
+            <h3 style="margin-top: 20px;">Digitalizacija hrvatske poljoprivrede</h3>
+        </div>
+
+        <!-- Second Container: Introduction Section -->
+        <div class="container-fluid bg-2 text-center" style="padding: 50px 0; background-color: #ecf0f1;">
+            <h3 class="margin" style="font-size: 30px; font-weight: bold;">Što je AgroNet?</h3>
+            <p style="margin-top: 20px; font-size: 18px; max-width: 600px; margin-left: auto; margin-right: auto;">Jedinstveno mjesto na kojem se svi poljoprivrednici Republike Hrvatske mogu naći i zajedno raditi ka izgradnji svojih gospodarstava.</p>
+            <a href="#" class="btn btn-default btn-lg" style="margin-top: 30px; background-color: #2c3e50; color: white; padding: 10px 25px; font-size: 20px; border-radius: 50px;">
+                Istražite
+            </a>
+        </div>
+
+        <!-- Third Container: Features Section -->
+        <div class="container-fluid bg-3 text-center" style="padding: 50px 0; background-color: #f8f9fa;">
+            <h3 class="margin" style="font-size: 30px; font-weight: bold;">Što Vam pruža AgroNet</h3><br>
+            <div class="row">
+                <div class="col-sm-4" style="padding: 20px;">
+                    <img src="Slike/kmeti.jpeg" class="img-responsive margin" style="width:100%; border-radius: 10px; margin-bottom: 20px;" alt="Farmers Image">
+                    <p style="font-size: 18px;">Ponudu svih poljoprivrednih usluga koji nude poljoprivrednici u vašoj okolici, a i cijeloj Hrvatskoj.</p>
+                </div>
+                <div class="col-sm-4" style="padding: 20px;">
+                    <img src="Slike/traktor.jpeg" class="img-responsive margin" style="width:100%; border-radius: 10px; margin-bottom: 20px;" alt="Tractor Image">
+                    <p style="font-size: 18px;">Brz i jednostavan način praćenja vaše imovine i radova.</p>
+                </div>
+                <div class="col-sm-4" style="padding: 20px;">
+                    <img src="Slike/krave.jpg" class="img-responsive margin" style="width:100%; border-radius: 10px; margin-bottom: 20px;" alt="Cows Image">
+                    <p style="font-size: 18px;">Domaći proizvodi nadohvat ruke, već u Vašem domu nakon par klikova.</p>
+                </div>
+            </div>
+        </div>
+
+    }
 </div>

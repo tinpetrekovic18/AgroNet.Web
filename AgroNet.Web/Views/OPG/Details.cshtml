@@ -65,6 +65,7 @@ else
                     <tr>
                         <th>Naziv Usluge</th>
                         <th>Vrsta Usluge</th>
+                        <th>Mogućnosti</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,6 +74,13 @@ else
                         <tr>
                             <td>@usluga.Usluga.Naziv</td>
                             <td>@usluga.Usluga.VrstaUsluge?.Naziv</td>
+                            <td>
+                                <div>
+                                    <a href="@Url.Action("Details", "Usluge", new { id = @usluga.Usluga.Id })" class="btn btn-info btn-sm">Detalji</a>
+                                    <a href="@Url.Action("CreateOrder", "Usluge", new { uslugaId = @usluga.Usluga.Id, prodavacOpgId = @Model.OPG.Id })" class="btn btn-success btn-sm">Naruči</a>
+                                </div>
+                            </td>
+                            
                         </tr>
                     }
                 </tbody>
@@ -92,6 +100,7 @@ else
                     <tr>
                         <th>Naziv Proizvoda</th>
                         <th>Vrsta Proizvoda</th>
+                        <th>Mogućnosti</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,6 +109,12 @@ else
                         <tr>
                             <td>@proizvod.Proizvod.Naziv</td>
                             <td>@proizvod.Proizvod.VrstaProizvoda?.Naziv</td>
+                            <td>
+                                <div>
+                                    <a href="@Url.Action("Details", "Proizvodi", new { id = proizvod.Proizvod.Id })" class="btn btn-info btn-sm">Detalji</a>
+                                    <a href="@Url.Action("CreateOrder", "Proizvodi", new { proizvodId = @proizvod.Proizvod.Id, prodavacOpgId = @Model.OPG.Id })" class="btn btn-success btn-sm">Naruči</a>
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>

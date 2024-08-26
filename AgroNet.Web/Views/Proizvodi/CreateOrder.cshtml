@@ -3,9 +3,12 @@
 @{
     ViewBag.Title = "Create Order";
 }
-
-<h2>Create Order for Proizvod: @Model.ProizvodNaziv</h2>
-
+<div class="container">
+    <div class=" mt-3">
+    <h2 >Stvori narudžbu za Proizvod: @Model.ProizvodNaziv</h2>
+    </div>
+<div class="row justify-content-center">
+    <div class="col-md-6">
 <form asp-action="CreateOrder" method="post">
     <div class="form-group">
         <label asp-for="ProizvodNaziv"></label>
@@ -27,8 +30,13 @@
     </div>
     <input type="hidden" asp-for="ProizvodId" />
     <input type="hidden" asp-for="ProdavacOpgId" />
-    <button type="submit" class="btn btn-primary">Submit Order</button>
+                <div class=" mt-3">
+    <button type="submit" class="btn btn-primary me-3">Podnesi narudžbu</button>
+    </div>
 </form>
+</div>
+</div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

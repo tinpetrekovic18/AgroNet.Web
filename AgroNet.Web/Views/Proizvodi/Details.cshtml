@@ -37,5 +37,7 @@ else
 {
     <p>No owner information available for this OPG.</p>
 }
-
-<a class="btn btn-primary mt-3" href="@Url.Action("Proizvodi")">Povratak na Proizvode</a>
+<div class="d-flex align-items-center mt-3">
+<a class="btn btn-secondary me-3" href="@Url.Action("Proizvodi")">Povratak na Proizvode</a>
+<a class="btn btn-primary me-3" href="@Url.Action("CreateOrder", "Proizvodi", new { proizvodId = @Model.Proizvod.Proizvod.Id, prodavacOpgId = @Model.Proizvod.OPG.Id })">Naruči</a>
+</div>

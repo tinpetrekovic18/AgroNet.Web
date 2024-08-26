@@ -5,6 +5,7 @@ using AgroNet.Model;
 using AgroNet.Web.Models;
 using System.Threading.Tasks;
 using AgroNet.DAL;
+using System.Linq;
 
 namespace AgroNet.Web.Controllers
 {
@@ -20,7 +21,7 @@ namespace AgroNet.Web.Controllers
         }
 
         // GET: Narudzbe
-        public async Task<IActionResult> Index(bool showFinished = false)
+        public async Task<IActionResult> Index( bool showFinished = false)
         {
             var userEmail = User.Identity.Name;
 
@@ -34,6 +35,14 @@ namespace AgroNet.Web.Controllers
 
             var narudzbeQuery = _context.Narudzbe.AsQueryable();
 
+            var stavkeUsluga = await _context.StavkeNarudzbeUsluga
+               .Include(s => s.Usluga)
+               .ToListAsync();
+
+            var stavkeProizvodi = await _context.StavkeNarudzbeProizvoda
+                .Include(s => s.Proizvod)
+                .ToListAsync();
+
             if (showFinished)
             {
                 narudzbeQuery = narudzbeQuery.Where(n => n.StatusNarudzbeId == 4 || n.StatusNarudzbeId == 5 || n.StatusNarudzbeId == 6);
@@ -46,6 +55,8 @@ namespace AgroNet.Web.Controllers
             }
 
             narudzbeQuery = narudzbeQuery.Where(n => n.KupacOPGId == currentUser.Id || n.ProdavacOPGId == currentUser.Id);
+
+
 
             var narudzbe = await narudzbeQuery
         .Include(n => n.KupacOPG)
@@ -63,7 +74,7 @@ namespace AgroNet.Web.Controllers
                 DatumNarudzbe = n.DatumNarudzbe,
                 DatumIsporuke = n.DatumIsporuke,
                 StatusNarudzbeNaziv = n.StatusNarudzbe?.Naziv,
-                StavkeUsluga = n.StavkeNarudzbeUsluga?.Where(s => s != null).Select(s => new StavkaViewModel
+                /*StavkeUsluga = n.StavkeNarudzbeUsluga?.Where(s => s != null).Select(s => new StavkaViewModel
                 {
                     Naziv = s.Usluga?.Naziv,
                     Kolicina = s.Kolicina,
@@ -74,8 +85,16 @@ namespace AgroNet.Web.Controllers
                     Naziv = s.Proizvod?.Naziv,
                     Kolicina = (int)s.Kolicina,
                     JedinicnaCijena = s.JedinicnaCijena
-                }).ToList() ?? new List<StavkaViewModel>(), // Ensure the list is not null
-                IsKupac = (n.KupacOPG?.Id == currentUser.Id) && (n.ProdavacOPG?.Id != currentUser.Id),
+                }).ToList() ?? new List<StavkaViewModel>(), // Ensure the list is not null*/
+                // Using the null-coalescing operator to ensure 'stavkeUsluga' is not null
+                StavkeUsluga = (stavkeUsluga?
+                    .Where(su => su.Narudzba?.Id == n?.Id)
+                    .ToList()) ?? new List<StavkaNarudzbeUsluga>(),
+                StavkeProizvodi = (stavkeProizvodi?
+                    .Where(sp => sp.Narudzba?.Id == n?.Id)
+                    .ToList()) ?? new List<StavkaNarudzbeProizvod>(),
+
+            IsKupac = (n.KupacOPG?.Id == currentUser.Id) && (n.ProdavacOPG?.Id != currentUser.Id),
                 IsProdavac = (n.KupacOPG?.Id != currentUser.Id) && (n.ProdavacOPG?.Id == currentUser.Id),
                 IsBoth =(n.KupacOPG?.Id==currentUser.Id) && (n.ProdavacOPG?.Id == currentUser.Id)
             });
@@ -253,6 +272,7 @@ namespace AgroNet.Web.Controllers
             }
 
             narudzba.StatusNarudzbeId = 4; // Assuming 5 is the ID for "Finished" status
+            narudzba.DatumIsporuke = DateTime.Now;
 
             _context.Update(narudzba);
             await _context.SaveChangesAsync();

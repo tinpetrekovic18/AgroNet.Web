@@ -10,10 +10,10 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link @(!ViewBag.ShowFinished ? "active" : "")" href="@Url.Action("Index", new { showFinished = false })">Active Orders</a>
+            <a class="nav-link @(!ViewBag.ShowFinished ? "active" : "")" href="@Url.Action("Index", new { showFinished = false })">Narudžbe u tijeku</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @(ViewBag.ShowFinished ? "active" : "")" href="@Url.Action("Index", new { showFinished = true })">Finished Orders</a>
+            <a class="nav-link @(ViewBag.ShowFinished ? "active" : "")" href="@Url.Action("Index", new { showFinished = true })">Završene narudžbe</a>
         </li>
     </ul>
 
@@ -43,24 +43,24 @@
                     <td>
                         @if (narudzba.StavkeUsluga.Any())
                         {
-                            @narudzba.StavkeUsluga.First().Naziv
+                            @narudzba.StavkeUsluga.First().Usluga.Naziv
                         }
                         @if (narudzba.StavkeProizvodi.Any())
                         {
-                            @narudzba.StavkeProizvodi.First().Naziv
+                            @narudzba.StavkeProizvodi.First().Proizvod.Naziv
                         }
                     </td>
                     <td>
-                        <a href="@Url.Action("Details", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Detalji</a>
+                        <a href="@Url.Action("Details", new { id = narudzba.Id })" class="btn btn-info btn-sm">Detalji</a>
                         @if (narudzba.StatusNarudzbeNaziv == "Završeno" || narudzba.StatusNarudzbeNaziv == "Odbijeno" || narudzba.StatusNarudzbeNaziv == "Otkazano")
                         {
-                            
+
                         }
                         else if (narudzba.IsKupac)
                         {
-                            <a href="@Url.Action("Edit", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="@Url.Action("Edit", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Uredi</a>
                             <form asp-action="Cancel" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Otkaži</button>
                             </form>
                         }
                         else if (narudzba.IsProdavac)
@@ -68,20 +68,20 @@
                             if (narudzba.StatusNarudzbeNaziv == "Potvrđeno")
                             {
                                 <form asp-action="Finish" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-primary btn-sm">Finish</button>
+                                    <button type="submit" class="btn btn-primary btn-sm">Završi</button>
                                 </form>
                             }
                             else
                             {
                                 <form asp-action="Accept" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                    <button type="submit" class="btn btn-success btn-sm">Prihvati</button>
                                 </form>
                                 <form asp-action="Decline" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Odbij</button>
                                 </form>
                             }
                         }
-                        else if(narudzba.IsBoth)
+                        else if (narudzba.IsBoth)
                         {
                             <a href="@Url.Action("Edit", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Edit</a>
                             <form asp-action="Cancel" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
@@ -90,16 +90,16 @@
                             if (narudzba.StatusNarudzbeNaziv == "Potvrđeno")
                             {
                                 <form asp-action="Finish" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-primary btn-sm">Finish</button>
+                                    <button type="submit" class="btn btn-primary btn-sm">Završi</button>
                                 </form>
                             }
                             else
                             {
                                 <form asp-action="Accept" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                    <button type="submit" class="btn btn-success btn-sm">Prihvati</button>
                                 </form>
                                 <form asp-action="Decline" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Odbij</button>
                                 </form>
                             }
                         }
