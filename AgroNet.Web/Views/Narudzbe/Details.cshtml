@@ -3,6 +3,19 @@
 @{
     ViewBag.Title = "Narudžba Details";
 }
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index")">
+                    Narudžbe
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Detalji narudžbe</li>
+        </ol>
+    </nav>
+</div>
 
 <div class="container">
     <h2>Detalji Narudžbe @Model.Narudzba.Id</h2>
@@ -11,15 +24,15 @@
         <h4>General Information</h4>
         <dl class="dl-horizontal">
             <dt>Kupac OPG:</dt>
-            <dd>@Model.Narudzba.KupacOPG?.Naziv ?? "N/A"</dd>
+            <dd>@Model.Narudzba.KupacOPG?.Naziv</dd>
             <dt>Prodavac OPG:</dt>
-            <dd>@Model.Narudzba.ProdavacOPG?.Naziv ?? "N/A"</dd>
+            <dd>@Model.Narudzba.ProdavacOPG?.Naziv</dd>
             <dt>Datum Narudžbe:</dt>
-            <dd>@Model.Narudzba.DatumNarudzbe?.ToString("dd.MM.yyyy") ?? "N/A"</dd>
+            <dd>@Model.Narudzba.DatumNarudzbe?.ToString("dd.MM.yyyy")</dd>
             <dt>Datum Isporuke:</dt>
-            <dd>@Model.Narudzba.DatumIsporuke?.ToString("dd.MM.yyyy") ?? "N/A"</dd>
+            <dd>@Model.Narudzba.DatumIsporuke?.ToString("dd.MM.yyyy")</dd>
             <dt>Status Narudžbe:</dt>
-            <dd>@Model.Narudzba.StatusNarudzbe?.Naziv ?? "N/A"</dd>
+            <dd>@Model.Narudzba.StatusNarudzbe?.Naziv</dd>
         </dl>
     </div>
 
@@ -41,7 +54,8 @@
                         <tr>
                             <td>@stavka.Usluga.Naziv</td>
                             <td>@stavka.Kolicina</td>
-                            <td>@stavka.JedinicnaCijena?.ToString("0.00")</td>
+                            <td>@stavka.JedinicnaCijena?.ToString("0.00") €</td>
+                            <td>(@stavka.JedinicnaCijena? * @stavka.Kolicina).ToString("0.00") €</td>
                         </tr>
                     }
                 </tbody>

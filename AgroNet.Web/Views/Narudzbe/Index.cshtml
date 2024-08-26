@@ -54,7 +54,7 @@
                         <a href="@Url.Action("Details", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Detalji</a>
                         @if (narudzba.StatusNarudzbeNaziv == "Završeno" || narudzba.StatusNarudzbeNaziv == "Odbijeno" || narudzba.StatusNarudzbeNaziv == "Otkazano")
                         {
-                            <p>Zaključano</p>
+                            
                         }
                         else if (narudzba.IsKupac)
                         {

@@ -1,5 +1,20 @@
 ﻿@model AgroNet.Web.Models.ProizvodDetailsViewModel
 
+
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Proizvodi")">
+                    Proizvodi
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Proizvod.Proizvod.Naziv</li>
+        </ol>
+    </nav>
+</div>
+
 <h2>Details for @Model.Proizvod.Proizvod.Naziv</h2>
 <p><strong>Vrsta proizvoda:</strong> @Model.Proizvod.Proizvod.VrstaProizvoda?.Naziv</p>
 <p><strong>Opis proizvoda:</strong> @Model.Proizvod.Proizvod.Opis</p>

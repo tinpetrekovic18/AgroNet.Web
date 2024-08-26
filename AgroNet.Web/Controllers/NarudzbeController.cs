@@ -107,6 +107,8 @@ namespace AgroNet.Web.Controllers
                 .Where(s => s.NarudzbaId == id)
                 .ToListAsync();
 
+            
+
             var userEmail = User.Identity.Name;
 
             var vlasnik = _context.Vlasnici.FirstOrDefault(v => v.Email == userEmail);

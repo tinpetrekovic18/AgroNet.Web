@@ -28,6 +28,7 @@ namespace AgroNet.Model
 
         public Narudzba Narudzba { get; set; }
         public Usluga Usluga { get; set; }
+
     }
 
 }

@@ -1,5 +1,19 @@
 ﻿@model AgroNet.Web.Models.UslugaDetailsViewModel
 
+<div class="container">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Usluge")">
+                    Usluge
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Usluga.Usluga.Naziv</li>
+        </ol>
+    </nav>
+</div>
+
 <h2>@Model.Usluga.Usluga.Naziv</h2>
 <p><strong>Vrsta usluge:</strong> @Model.Usluga.Usluga.VrstaUsluge?.Naziv</p>
 <p><strong>Opis usluge:</strong> @Model.Usluga.Usluga.Opis</p>

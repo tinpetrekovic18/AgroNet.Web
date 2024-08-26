@@ -6,9 +6,12 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="MojOPG" asp-action="CreateOrEdit" title="Create OPG">Moj OPG</a>
-        </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Narudzbe" asp-action="Index" title="Narudzbe">Moje Narudzbe</a>
+    </li>
+    <li class="nav-item">
+         <a class="nav-link text-dark" asp-area="" asp-controller="MojOPG" asp-action="CreateOrEdit" title="Create OPG">Moj OPG</a>
+    </li>
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profil</a>
     </li>
