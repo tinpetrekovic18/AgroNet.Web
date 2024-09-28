@@ -21,7 +21,7 @@
     <h2>Detalji Narudžbe @Model.Narudzba.Id</h2>
 
     <div>
-        <h4>General Information</h4>
+        <h4>Opće informacije</h4>
         <dl class="dl-horizontal">
             <dt>Kupac OPG:</dt>
             <dd>@Model.Narudzba.KupacOPG?.Naziv</dd>
@@ -46,6 +46,7 @@
                         <th>Usluga</th>
                         <th>Količina</th>
                         <th>Jedinična Cijena</th>
+                        <th>Ukupna cijena</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +56,7 @@
                             <td>@stavka.Usluga.Naziv</td>
                             <td>@stavka.Kolicina</td>
                             <td>@stavka.JedinicnaCijena?.ToString("0.00") €</td>
-                            <td>(@stavka.JedinicnaCijena? * @stavka.Kolicina).ToString("0.00") €</td>
+                            <td>@stavka.JedinicnaCijena?.ToString("0.00") €</td>
                         </tr>
                     }
                 </tbody>
@@ -63,7 +64,7 @@
         }
         else
         {
-            <p>No service items found.</p>
+            <p>Narudžba nema stavke usluga.</p>
         }
     </div>
 
@@ -93,7 +94,7 @@
         }
         else
         {
-            <p>No product items found.</p>
+            <p>Narudžba nema stavke proizvoda.</p>
         }
     </div>
 

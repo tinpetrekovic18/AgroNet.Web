@@ -67,8 +67,8 @@
 
                         <div class="form-group mt-4">
                             <input type="hidden" asp-for="Id" />
-                            <input type="submit" value="@(ViewBag.IsEditMode ? "Save Changes" : "Create OPG")" class="btn btn-primary" />
-                            <a asp-action="CreateOrEdit" class="btn btn-secondary ml-2">Cancel</a>
+                            <input type="submit" value="@(ViewBag.IsEditMode ? "Spremi promjene" : "Create OPG")" class="btn btn-primary" />
+                            <a asp-action="CreateOrEdit" class="btn btn-secondary ml-2">Odustani</a>
                         </div>
                     </form>
                 </div>
@@ -78,7 +78,7 @@
     
 
         <div class="tab-pane" id="proizvodi">
-            <a href="@Url.Action("CreateProizvod", new { opgId = opgId })" class="btn btn-primary mb-3">Create New Proizvod</a>
+            <a href="@Url.Action("CreateProizvod", new { opgId = opgId })" class="btn btn-primary mb-3">Dodajte Proizvod</a>
             <table class="table">
                 <thead>
                     <tr>
@@ -96,6 +96,7 @@
                             <td>@item.Opis</td>
                             <td>@item.VrstaProizvodaNaziv</td> <!-- Display VrstaProizvoda.Naziv -->
                             <td>
+                                <div class="d-flex align-items-center">
                                 <a href="@Url.Action("EditProizvod", new { id = item.Id, opgId = opgId })" class="btn btn-warning d-inline-block">Uredi</a> <!-- Edit Button -->
                                 <form asp-action="DeleteProizvod" method="post" class="d-inline-block ml-2">
                                     <!-- Delete form with margin -->
@@ -103,6 +104,7 @@
                                     <input type="hidden" name="opgId" value="@opgId" />
                                     <input type="submit" value="Obriši" class="btn btn-danger" />
                                 </form>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -110,7 +112,7 @@
             </table>
         </div>
         <div class="tab-pane" id="strojeviAlati">
-            <a href="@Url.Action("CreateStrojAlat", new { opgId = opgId })" class="btn btn-primary mb-3">Create New Stroj/Alat</a>
+            <a href="@Url.Action("CreateStrojAlat", new { opgId = opgId })" class="btn btn-primary mb-3">Dodajte Stroj/Alat</a>
             <table class="table">
                 <thead>
                     <tr>
@@ -128,12 +130,14 @@
                             <td>@item.Opis</td>
                             <td>@item.VrstaStrojaAlataNaziv</td>
                             <td>
+                                <div class="d-flex align-items-center">
                                 <a href="@Url.Action("EditStrojAlat", new { id = item.Id, opgId = opgId })" class="btn btn-warning d-inline-block">Uredi</a> <!-- Edit Button -->
                                 <form asp-action="DeleteStrojAlat" method="post" class="d-inline-block ml-2">  <!-- Delete form with margin -->
                                     <input type="hidden" name="id" value="@item.Id" />
                                     <input type="hidden" name="opgId" value="@opgId" />
                                     <input type="submit" value="Obriši" class="btn btn-danger" />
                                 </form>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -142,7 +146,7 @@
         </div>
 
         <div class="tab-pane" id="usluge">
-            <a href="@Url.Action("CreateUsluga", new { opgId = opgId })" class="btn btn-primary mb-3">Create New Usluga</a>
+            <a href="@Url.Action("CreateUsluga", new { opgId = opgId })" class="btn btn-primary mb-3">Dodajte Uslugu</a>
             <table class="table">
                 <thead>
                     <tr>
@@ -160,12 +164,14 @@
                             <td>@item.Opis</td>
                             <td>@item.VrstaUslugeNaziv</td>
                             <td>
+                                <div class="d-flex align-items-center">
                                 <a href="@Url.Action("EditUsluga", new { id = item.Id, opgId = opgId })" class="btn btn-warning d-inline-block">Uredi</a> <!-- Edit Button -->
                                 <form asp-action="DeleteUsluga" method="post" class="d-inline-block ml-2"> <!-- Delete form with margin -->
                                     <input type="hidden" name="id" value="@item.Id" />
                                     <input type="hidden" name="opgId" value="@opgId" />
                                     <input type="submit" value="Obriši" class="btn btn-danger" />
                                 </form>
+                                </div>
                             </td>
                         </tr>
 
@@ -175,7 +181,7 @@
         </div>
 
         <div class="tab-pane" id="imanjaVlasnika">
-            <a href="@Url.Action("CreateImanjeVlasnik", new { opgId = Model.Id })" class="btn btn-primary mb-3">Create New Imanje Vlasnika</a>
+            <a href="@Url.Action("CreateImanjeVlasnik", new { opgId = Model.Id })" class="btn btn-primary mb-3">Dodajte Imanje </a>
             <table class="table">
                 <thead>
                     <tr>
@@ -193,21 +199,25 @@
                             <td>@item.Povrsina</td>
                             <td>@item.Proizvod</td>
                             <td>
+                                <div class="d-flex align-items-center">
                                 <a href="@Url.Action("EditImanjeVlasnik", new { id = item.Id, proizvodID=item.ProizvodId, vlasnikID=item.Vlasnik, imanjeID=item.ImanjeId,  opgId = opgId})" class="btn btn-warning d-inline-block">Uredi</a>
                                 <form asp-action="DeleteImanjeVlasnik" method="post" class="d-inline-block ml-2">
                                     <input type="hidden" name="id" value="@item.Id" />
                                     <input type="hidden" name="opgId"  value="@opgId" />
                                     <input type="submit" value="Obriši" class="btn btn-danger" />
                                 </form>
+                                </div>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
+
     </div>
 </div>
 
+@section Scripts {
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -221,4 +231,5 @@
         }
     });
 </script>
+}
 

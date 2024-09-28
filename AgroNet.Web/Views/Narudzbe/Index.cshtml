@@ -59,7 +59,7 @@
                         else if (narudzba.IsKupac)
                         {
                             <a href="@Url.Action("Edit", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Uredi</a>
-                            <form asp-action="Cancel" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                            <form asp-action="Cancel" asp-route-id="@narudzba.Id" method="post" style="display:inline-flex;">
                                 <button type="submit" class="btn btn-danger btn-sm">Otkaži</button>
                             </form>
                         }
@@ -67,38 +67,38 @@
                         {
                             if (narudzba.StatusNarudzbeNaziv == "Potvrđeno")
                             {
-                                <form asp-action="Finish" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                <form asp-action="Finish" asp-route-id="@narudzba.Id" method="post" style="display:inline-flex;">
                                     <button type="submit" class="btn btn-primary btn-sm">Završi</button>
                                 </form>
                             }
                             else
                             {
-                                <form asp-action="Accept" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                <form asp-action="Accept" asp-route-id="@narudzba.Id" method="post" style="display:inline-flex;">
                                     <button type="submit" class="btn btn-success btn-sm">Prihvati</button>
                                 </form>
-                                <form asp-action="Decline" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                <form asp-action="Decline" asp-route-id="@narudzba.Id" method="post" style="display:inline-flex;">
                                     <button type="submit" class="btn btn-danger btn-sm">Odbij</button>
                                 </form>
                             }
                         }
                         else if (narudzba.IsBoth)
                         {
-                            <a href="@Url.Action("Edit", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Edit</a>
-                            <form asp-action="Cancel" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            <a href="@Url.Action("Edit", new { id = narudzba.Id })" class="btn btn-warning btn-sm">Uredi</a>
+                            <form asp-action="Cancel" asp-route-id="@narudzba.Id" method="post" style="display:inline-flex;">
+                                <button type="submit" class="btn btn-danger btn-sm">Otkaži</button>
                             </form>
                             if (narudzba.StatusNarudzbeNaziv == "Potvrđeno")
                             {
-                                <form asp-action="Finish" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                <form asp-action="Finish" asp-route-id="@narudzba.Id" method="post" style="display:inline-flex;">
                                     <button type="submit" class="btn btn-primary btn-sm">Završi</button>
                                 </form>
                             }
                             else
                             {
-                                <form asp-action="Accept" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                <form asp-action="Accept" asp-route-id="@narudzba.Id" method="post" style="display:inline-flex;">
                                     <button type="submit" class="btn btn-success btn-sm">Prihvati</button>
                                 </form>
-                                <form asp-action="Decline" asp-route-id="@narudzba.Id" method="post" style="display:inline;">
+                                <form asp-action="Decline" asp-route-id="@narudzba.Id" method="post" style="display:inline-flex;">
                                     <button type="submit" class="btn btn-danger btn-sm">Odbij</button>
                                 </form>
                             }

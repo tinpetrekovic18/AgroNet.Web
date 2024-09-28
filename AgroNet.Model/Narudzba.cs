@@ -27,7 +27,6 @@ namespace AgroNet.Model
         [Required]
         [ForeignKey("StatusNarudzbe")]
         public int StatusNarudzbeId { get; set; }
-
         public OPG KupacOPG { get; set; }
         public OPG ProdavacOPG { get; set; }
         public StatusNarudzbe StatusNarudzbe { get; set; }

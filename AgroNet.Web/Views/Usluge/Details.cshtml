@@ -18,7 +18,10 @@
 <p><strong>Vrsta usluge:</strong> @Model.Usluga.Usluga.VrstaUsluge?.Naziv</p>
 <p><strong>Opis usluge:</strong> @Model.Usluga.Usluga.Opis</p>
 
-<h3>@Model.Usluga.OPG.Naziv </h3>
+<h3>
+    <a  href="@Url.Action("Details", "OPG", new{id = @Model.Usluga.OPG.Id})">@Model.Usluga.OPG.Naziv</a>
+</h3>
+
 <p><strong>Adresa:</strong> @Model.Usluga.OPG.Adresa</p>
 <p><strong>IBAN:</strong> @Model.Usluga.OPG.IBAN</p>
 <p><strong>Mjesto:</strong> @Model.Usluga.OPG.Mjesto.Naziv</p>
